@@ -4,7 +4,7 @@ package entities;
  *
  * @author Janam
  */
-public enum TripType {
+public enum EnumTripType {
 	CULTURE,
     NATURE,
     LEISURE,
