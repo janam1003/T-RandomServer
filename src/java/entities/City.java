@@ -28,9 +28,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     ,
     @NamedQuery(name = "findCityById", query = "SELECT c FROM City c WHERE c.cityId = :cityId")
     ,
+    @NamedQuery(name = "findCityByName", query = "SELECT c FROM City c WHERE c.name = :name")
+    ,
     @NamedQuery(name = "findCityByCountry", query = "SELECT c FROM City c WHERE c.country = :country")
     ,
     @NamedQuery(name = "findCityByPopulationType", query = "SELECT c FROM City c WHERE c.populationType = :populationType")
+    ,
+    @NamedQuery(name = "findCityByWeatherType", query = "SELECT c FROM City c WHERE c.weatherType = :weatherType")
+    ,
+    @NamedQuery(name = "findCityByNameAndCountry", query = "SELECT c FROM City c WHERE c.name:name and c.country:country"
+    )
 })
 @XmlRootElement
 public class City implements Serializable {
@@ -52,7 +59,7 @@ public class City implements Serializable {
     private WeatherType weatherType;
 
     @ManyToMany(mappedBy = "City", fetch = EAGER)
-    private Set<Trip> trip;
+    private Set<Trip> trips;
 
     public City() {
 
@@ -64,7 +71,7 @@ public class City implements Serializable {
         this.country = country;
         this.populationType = populationType;
         this.weatherType = weatherType;
-        this.trip = trip;
+        this.trips = trip;
     }
 
     public Long getCityId() {
@@ -108,11 +115,11 @@ public class City implements Serializable {
     }
 
     public Set<Trip> getTrip() {
-        return trip;
+        return trips;
     }
 
     public void setTrip(Set<Trip> trip) {
-        this.trip = trip;
+        this.trips = trip;
     }
 
     @Override
@@ -139,6 +146,6 @@ public class City implements Serializable {
 
     @Override
     public String toString() {
-        return "City{" + "cityId=" + cityId + ", name=" + name + ", country=" + country + ", populationType=" + populationType + ", weatherType=" + weatherType + ", trip=" + trip + '}';
+        return "City{" + "cityId=" + cityId + ", name=" + name + ", country=" + country + ", populationType=" + populationType + ", weatherType=" + weatherType + ", trip=" + trips + '}';
     }
 }
