@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Generated;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 
 /**
@@ -24,14 +25,18 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name="findTripById", query="SELECT t FROM Trip t WHERE t.id = :id")
 //Query to get a trip with the tripType
 @NamedQuery(name="findTripByTripType", query="SELECT t FROM Trip t WHERE t.tripType = :tripType")
-
+@XmlRootElement
 public class Trip implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 
-	//TODO: how to add cities to the trip? new method?
-	@OneToMany(cascade=ALL, mappedBy="trip")
+	//TODO: how to add cities to the trip? new method? ¿esta bien?
+	@ManyToMany(fetch=EAGER,cascade=MERGE)
+	@JoinTable(schema="g3CRUD",name="trip_cities")
+	@JoinColumn(name="trip_id", referencedColumnName="id")
+	@JoinColumn(name="city_id", referencedColumnName="id")
+	@OrderBy("id ASC")
 	private List<City> cities;
 
 	@Enumerated(EnumType.STRING)
@@ -88,5 +93,11 @@ public class Trip implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Trip [id=" + id + ", cities=" + cities + ", tripType=" + tripType + ", description=" + description
+				+ "]";
+	}
+	
 }

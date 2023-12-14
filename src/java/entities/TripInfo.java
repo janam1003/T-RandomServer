@@ -26,6 +26,7 @@ import javax.persistence.MapsId;
 @NamedQuery(name="findActiveTripInfoByCustomer", query="SELECT ti FROM TripInfo ti WHERE ti.customer = :customer AND ti.lastDate > :date")
 //Query to get only tripInfos that are inactive
 @NamedQuery(name="findInactiveTripInfoByCustomer", query="SELECT ti FROM TripInfo ti WHERE ti.customer = :customer AND ti.lastDate < :date")
+@XmlRootElement
 public class TripInfo implements Serializable{
 	@EmbeddedId
 	TripInfoId tripInfoId;
@@ -78,6 +79,12 @@ public class TripInfo implements Serializable{
 	}
 	public void setLastDate(Date lastDate) {
 		this.lastDate = lastDate;
+	}
+	
+	@Override
+	public String toString() {
+		return "TripInfo [tripInfoId=" + tripInfoId + ", trip=" + trip + ", customer=" + customer + ", initialDate="
+				+ initialDate + ", lastDate=" + lastDate + "]";
 	}
 	
 }

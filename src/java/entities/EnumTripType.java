@@ -2,7 +2,7 @@ package entities;
 
 /**
  *
- * @author Janam
+ * @author Iñigo
  */
 public enum EnumTripType {
 	CULTURE,
