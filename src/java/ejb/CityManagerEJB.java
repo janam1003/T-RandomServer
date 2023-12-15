@@ -3,7 +3,6 @@ package ejb;
 import ejbLocal.CityManagerEJBLocal;
 import entities.City;
 import entities.PopulationType;
-import entities.WeatherType;
 import exceptions.CreateException;
 import exceptions.DeleteException;
 import exceptions.ReadException;
@@ -32,6 +31,12 @@ public class CityManagerEJB implements CityManagerEJBLocal {
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * Creates a City and stores it in the underlying application storage.
+     *
+     * @param city The {@link City} object containing the city data.
+     * @throws CreateException If there is any Exception during processing.
+     */
     @Override
     public void createCity(City city) throws CreateException {
 
@@ -51,6 +56,12 @@ public class CityManagerEJB implements CityManagerEJBLocal {
         }
     }
 
+    /**
+     * Updates a city's data in the underlying application storage.
+     *
+     * @param city The {@link City} object containing the city data.
+     * @throws UpdateException If there is any Exception during processing.
+     */
     @Override
     public void updateCity(City city) throws UpdateException {
 
@@ -72,6 +83,12 @@ public class CityManagerEJB implements CityManagerEJBLocal {
         }
     }
 
+    /**
+     * Deletes a city's data in the underlying application storage.
+     *
+     * @param city The {@link City} object containing the city data.
+     * @throws DeleteException If there is any Exception during processing.
+     */
     @Override
     public void deleteCity(City city) throws DeleteException {
 
@@ -91,6 +108,13 @@ public class CityManagerEJB implements CityManagerEJBLocal {
         }
     }
 
+    /**
+     * Finds a City based on the provided CityId.
+     *
+     * @param cityId The unique identifier of the City.
+     * @return The City object if found, or null if not found.
+     * @throws ReadException If an exception occurs during the read operation.
+     */
     @Override
     public City findCityByCityId(Integer CityId) throws ReadException {
 
@@ -119,6 +143,12 @@ public class CityManagerEJB implements CityManagerEJBLocal {
         return city;
     }
 
+    /**
+     * Finds all cities in the system.
+     *
+     * @return A list of City objects representing all cities in the system.
+     * @throws ReadException If an exception occurs during the read operation.
+     */
     @Override
     public List<City> findAllCities() throws ReadException {
 
@@ -141,6 +171,14 @@ public class CityManagerEJB implements CityManagerEJBLocal {
         return city;
     }
 
+    /**
+     * Finds all cities in a specific country.
+     *
+     * @param country The name of the country for which cities are to be
+     * retrieved.
+     * @return A list of City objects in the specified country.
+     * @throws ReadException If an exception occurs during the read operation.
+     */
     @Override
     public List<City> findAllCityByCountry(String country) throws ReadException {
 
@@ -163,6 +201,14 @@ public class CityManagerEJB implements CityManagerEJBLocal {
         return cities;
     }
 
+    /**
+     * Finds all cities with a specific population type.
+     *
+     * @param populationType The population type for which cities are to be
+     * retrieved.
+     * @return A list of City objects with the specified population type.
+     * @throws ReadException If an exception occurs during the read operation.
+     */
     @Override
     public List<City> findAllCitiesBypopulationType(PopulationType populationType) throws ReadException {
 
