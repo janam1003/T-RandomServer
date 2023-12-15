@@ -16,7 +16,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "customer", schema = "g3CRUD")
-@PrimaryKeyJoinColumn(name = "mail")
 @NamedQueries({
 @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
 @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.mail = :email"),

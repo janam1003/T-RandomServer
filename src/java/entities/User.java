@@ -6,17 +6,22 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 /**
  * Entity JPA class for user data. The properties of this class are login , 
  * name, profile and department.
  * @author javi
  */
-@MappedSuperclass
+@Entity
+@Table(name = "user", schema = "g3CRUD")
+@Inheritance( strategy = InheritanceType.JOINED)
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
