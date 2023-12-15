@@ -1,3 +1,13 @@
+package ejb;
+
+import ejbLocal.TripInfoManagerEJBLocal;
+import entities.Customer;
+import entities.Trip;
+import entities.TripInfo;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,7 +47,7 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
             LOGGER.info("TripInfoManager: Finding tripInfo by id.");
             tripInfo = em.find(TripInfo.class, id);
             if (tripInfo != null) {
-                LOGGER.log(Level.INFO, "TripInfoManager: TripInfo found {0}", tripInfo.getId());
+                LOGGER.log(Level.INFO, "TripInfoManager: TripInfo found {0}", tripInfo.getTripInfoId());
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "TripInfoManager: Exception finding tripInfo by id:", e.getMessage());

@@ -1,10 +1,18 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -12,19 +20,23 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Iñigo
  */
 @Entity
-@Table(name="tripInfo", schema="g3CRUD")
-//QUery to get all tripInfo from a Customer
-@NamedQuery(name="findAllTripInfoByCustomer", query="SELECT ti FROM TripInfo ti WHERE ti.customer = :customer")
-//Query to get all tripInfo from a Trip
-@NamedQuery(name="findAllTripInfoByTrip", query="SELECT ti FROM TripInfo ti WHERE ti.trip = :trip")
-//QUery to get only tripInfos that are active
-@NamedQuery(name="findActiveTripInfoByCustomer", query="SELECT ti FROM TripInfo ti WHERE ti.customer = :customer AND ti.lastDate > :date")
-//Query to get only tripInfos that are inactive
-@NamedQuery(name="findInactiveTripInfoByCustomer", query="SELECT ti FROM TripInfo ti WHERE ti.customer = :customer AND ti.lastDate < :date")
+@Table(name = "tripInfo", schema = "g3CRUD")
+@NamedQueries({
+    //QUery to get all tripInfo from a Customer
+    @NamedQuery(name = "findAllTripInfoByCustomer", query = "SELECT ti FROM TripInfo ti WHERE ti.customer = :customer"),
+    //Query to get all tripInfo from a Trip
+    @NamedQuery(name = "findAllTripInfoByTrip", query = "SELECT ti FROM TripInfo ti WHERE ti.trip = :trip"),
+    //QUery to get only tripInfos that are active
+    @NamedQuery(name = "findActiveTripInfoByCustomer", query = "SELECT ti FROM TripInfo ti WHERE ti.customer = :customer AND ti.lastDate > :date"),
+    //Query to get only tripInfos that are inactive
+    @NamedQuery(name = "findInactiveTripInfoByCustomer", query = "SELECT ti FROM TripInfo ti WHERE ti.customer = :customer AND ti.lastDate < :date")
+})
+
 @XmlRootElement
 public class TripInfo implements Serializable{
 	@EmbeddedId
 	TripInfoId tripInfoId;
+
 
 	@MapsId("tripId")
 	@ManyToOne
@@ -78,6 +90,15 @@ public class TripInfo implements Serializable{
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+           
+        public TripInfoId getTripInfoId() {
+            return tripInfoId;
+        }
+
+        public void setTripInfoId(TripInfoId tripInfoId) {
+            this.tripInfoId = tripInfoId;
+        }
+        
 	public Date getInitialDate() {
 		return initialDate;
 	}

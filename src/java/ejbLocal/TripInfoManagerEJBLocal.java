@@ -1,3 +1,16 @@
+package ejbLocal;
+
+import entities.Customer;
+import entities.Trip;
+import entities.TripInfo;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
+import java.util.Date;
+import java.util.List;
+import javax.ejb.Local;
+
 /**
  * EJB Local Interface for managing TripInfo entity CRUD operations.
  * @author Iñigo

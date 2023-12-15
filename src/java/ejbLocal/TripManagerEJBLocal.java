@@ -1,3 +1,11 @@
+package ejbLocal;
+
+import entities.EnumTripType;
+import entities.Trip;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.List;
 import javax.ejb.Local;
 

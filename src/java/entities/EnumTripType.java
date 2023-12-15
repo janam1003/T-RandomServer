@@ -5,7 +5,7 @@ package entities;
  * @author Iñigo
  */
 public enum EnumTripType {
-	CULTURE,
+    CULTURE,
     NATURE,
     LEISURE,
     SPORTS   

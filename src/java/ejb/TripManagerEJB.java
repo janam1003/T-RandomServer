@@ -1,3 +1,12 @@
+package ejb;
+
+import ejbLocal.TripManagerEJBLocal;
+import entities.EnumTripType;
+import entities.Trip;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
