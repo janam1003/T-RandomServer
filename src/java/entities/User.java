@@ -20,15 +20,7 @@ import javax.persistence.Table;
  * @author javi
  */
 @Entity
-@Table(name="user",schema="dindb")
-@NamedQueries({
-    @NamedQuery(name="findAllUsers",
-            query="SELECT u FROM User u ORDER BY u.name DESC"
-    ),
-    @NamedQuery(name="findUsersByEmail",
-            query="SELECT u FROM User u WHERE u.profile = :profile"
-    )
-})
+@Table(name="user",schema="g3CRUD")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
@@ -123,7 +115,7 @@ public class User implements Serializable {
      */
     @Override
     public String toString() {
-        return "javafxserverside.entity.User[ mail=" + mail + " ]";
+        return "User{" + "mail=" + mail + ", password=" + password + ", userType=" + userType + '}';
     }
     
 }

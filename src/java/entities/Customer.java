@@ -3,6 +3,8 @@ package entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -13,8 +15,15 @@ import javax.persistence.Table;
  * The primary key is the email address, and it is used as a foreign key in the "tripsInfo" relationship.
  */
 @Entity
-@Table(name = "customer", schema = "dindb")
+@Table(name = "customer", schema = "g3CRUD")
 @PrimaryKeyJoinColumn(name = "mail")
+@NamedQueries({
+@NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
+@NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.mail = :email"),
+@NamedQuery(name = "Customer.findWithTrips", query = "SELECT DISTINCT c FROM Customer c JOIN FETCH c.tripsInfo t"),
+@NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :customerAddress"),
+@NamedQuery(name = "Customer.findByNameContaining", query = "SELECT c FROM Customer c WHERE UPPER(c.name) LIKE UPPER(:partialName)")
+})
 public class Customer extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -172,19 +181,15 @@ public class Customer extends User implements Serializable {
         return !((this.getMail() == null) ? (other.getMail() != null) : !this.getMail().equals(other.getMail()));
     }
 
+    @Override
+    public String toString() {
+        return super.toString()+"Customer{" + "name=" + name + ", zip=" + zip + ", address=" + address + ", phone=" + phone + ", tripsInfo=" + tripsInfo + '}';
+    }
+
     /**
      * Generates a string representation of this customer.
      *
      * @return A string representation of this customer.
      */
-    @Override
-    public String toString() {
-        return "Customer{"
-                + "email='" + getMail() + '\''
-                + ", name='" + name + '\''
-                + ", zip=" + zip
-                + ", address='" + address + '\''
-                + ", phone=" + phone
-                + '}';
-    }
+
 }
