@@ -8,6 +8,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Represents a Customer entity, extending the User class and implementing Serializable.
@@ -23,6 +25,7 @@ import javax.persistence.Table;
 @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :customerAddress"),
 @NamedQuery(name = "Customer.findByNameContaining", query = "SELECT c FROM Customer c WHERE UPPER(c.name) LIKE UPPER(:partialName)")
 })
+@XmlRootElement
 public class Customer extends User {
 
     private static final long serialVersionUID = 1L;
@@ -136,6 +139,7 @@ public class Customer extends User {
      *
      * @return The list of TripInfo objects associated with this customer.
      */
+    @XmlTransient
     public List<TripInfo> getTripsInfo() {
         return tripsInfo;
     }

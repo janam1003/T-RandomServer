@@ -75,7 +75,7 @@ public class TripInfo implements Serializable{
 			return false;
 		return true;
 	}
-	@XmlTransient
+	//@XmlTransient
 	public Trip getTrip() {
 		return trip;
 	}
@@ -83,7 +83,7 @@ public class TripInfo implements Serializable{
 	public void setTrip(Trip trip) {
 		this.trip = trip;
 	}
-	@XmlTransient
+	//@XmlTransient
 	public Customer getCustomer() {
 		return customer;
 	}

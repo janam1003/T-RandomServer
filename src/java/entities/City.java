@@ -79,7 +79,7 @@ public class City implements Serializable {
     /**
      * Relational field for cities trips.
      */
-    @ManyToMany(mappedBy = "cities", cascade = MERGE, fetch = EAGER)
+    @ManyToMany(mappedBy = "cities")
     private Set<Trip> trips;
 
     /**

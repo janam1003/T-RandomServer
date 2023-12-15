@@ -9,7 +9,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class TripInfoId implements Serializable{
 	private Integer tripId;
-	private Integer customerId;
+	private String customerId;
 	
 	public Integer getTripId() {
 		return tripId;
@@ -18,10 +18,10 @@ public class TripInfoId implements Serializable{
 		this.tripId = tripId;
 	}
 
-	public Integer getCustomerId() {
+	public String getCustomerId() {
 		return customerId;
 	}
-	public void setCustomerId(Integer customerId) {
+	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
 }

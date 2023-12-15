@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *	Entity for Trip, it has id, cities, tripType and description
@@ -44,7 +45,7 @@ public class Trip implements Serializable{
 	private List<TripInfo> tripInfo;
 
 	//TODO: how to add cities to the trip? new method? ¿esta bien?
-	@ManyToMany(fetch=EAGER,cascade=MERGE)
+	@ManyToMany(fetch=EAGER)
 	@JoinTable(schema="g3CRUD",name="trip_cities")
 	private List<City> cities;
 
@@ -77,6 +78,7 @@ public class Trip implements Serializable{
 		return true;
 	}
 	
+    @XmlTransient
 	public List<TripInfo> getTripInfo() {
 		return tripInfo;
 	}
@@ -97,6 +99,7 @@ public class Trip implements Serializable{
 	public void setTripType(EnumTripType tripType) {
 		this.tripType = tripType;
 	}
+    @XmlTransient
     public List<City> getCities() {
 		return cities;
 	}

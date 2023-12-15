@@ -2,10 +2,10 @@ package ejbLocal;
 
 import entities.City;
 import entities.PopulationType;
-import exceptions.CreateException;
-import exceptions.DeleteException;
-import exceptions.ReadException;
-import exceptions.UpdateException;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.List;
 
 /**
