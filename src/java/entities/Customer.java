@@ -24,7 +24,7 @@ import javax.persistence.Table;
 @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :customerAddress"),
 @NamedQuery(name = "Customer.findByNameContaining", query = "SELECT c FROM Customer c WHERE UPPER(c.name) LIKE UPPER(:partialName)")
 })
-public class Customer extends User implements Serializable {
+public class Customer extends User {
 
     private static final long serialVersionUID = 1L;
 

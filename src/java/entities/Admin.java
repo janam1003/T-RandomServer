@@ -1,10 +1,15 @@
 package entities;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  *
  * @author Janam
  */
-public class Admin {
+@Entity
+@Table(name="admin",schema="g3CRUD")
+public class Admin extends User{
 
     @Override
     public String toString() {
