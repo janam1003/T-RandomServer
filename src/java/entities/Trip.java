@@ -45,10 +45,7 @@ public class Trip implements Serializable{
 
 	//TODO: how to add cities to the trip? new method? ¿esta bien?
 	@ManyToMany(fetch=EAGER,cascade=MERGE)
-	//@JoinTable(schema="g3CRUD",name="trip_cities")
-	//@JoinColumn(name="trip_id", referencedColumnName="id")
-	//@JoinColumn(name="city_id", referencedColumnName="id")
-	@OrderBy("id ASC")
+	@JoinTable(schema="g3CRUD",name="trip_cities")
 	private List<City> cities;
 
 	@Enumerated(EnumType.STRING)

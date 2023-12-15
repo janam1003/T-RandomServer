@@ -91,13 +91,13 @@ public class TripInfo implements Serializable{
 		this.customer = customer;
 	}
            
-        public TripInfoId getTripInfoId() {
-            return tripInfoId;
-        }
+    public TripInfoId getTripInfoId() {
+        return tripInfoId;
+    }
 
-        public void setTripInfoId(TripInfoId tripInfoId) {
-            this.tripInfoId = tripInfoId;
-        }
+    public void setTripInfoId(TripInfoId tripInfoId) {
+        this.tripInfoId = tripInfoId;
+    }
         
 	public Date getInitialDate() {
 		return initialDate;
