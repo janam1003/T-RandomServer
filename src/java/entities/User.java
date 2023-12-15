@@ -6,26 +6,23 @@
 package entities;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 
 /**
  * Entity JPA class for user data. The properties of this class are login , 
  * name, profile and department.
  * @author javi
  */
-@Entity
-@Table(name="user",schema="g3CRUD")
+@MappedSuperclass
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * Id field for user entity. It is also the mail id value for the user.
      */
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)->Not allowed for Hibernate
     private String mail;
     /**
      * Full name of the user.
