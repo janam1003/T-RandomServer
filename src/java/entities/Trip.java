@@ -6,6 +6,7 @@ import javax.annotation.Generated;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  *	Entity for Trip, it has id, cities, tripType and description
@@ -15,14 +16,6 @@ import javax.persistence.NamedQuery;
 @Table(name="trip", schema="g3CRUD")
 //Query to get all the trips
 @NamedQuery(name="findAllTrips", query="SELECT t FROM Trip t")
-//Query to create a trip with the tripType, description and cities 
-@NamedQuery(name="createTrip", query="INSERT INTO Trip (tripType, description, cities) VALUES (:tripType, :description, :cities)")
-//Query to delete a trip with the id
-@NamedQuery(name="deleteTrip", query="DELETE FROM Trip t WHERE t.id = :id")
-//Query to update a trip with the id, tripType, description and cities
-@NamedQuery(name="updateTrip", query="UPDATE Trip t SET t.tripType = :tripType, t.description = :description, t.cities = :cities WHERE t.id = :id")
-//Query to get a trip with the id
-@NamedQuery(name="findTripById", query="SELECT t FROM Trip t WHERE t.id = :id")
 //Query to get a trip with the tripType
 @NamedQuery(name="findTripByTripType", query="SELECT t FROM Trip t WHERE t.tripType = :tripType")
 @XmlRootElement
@@ -30,6 +23,9 @@ public class Trip implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
+
+	@OneToMany(cascade=ALL, mappedBy="trip")
+	private List<TripInfo> tripInfo;
 
 	//TODO: how to add cities to the trip? new method? ¿esta bien?
 	@ManyToMany(fetch=EAGER,cascade=MERGE)
@@ -67,6 +63,14 @@ public class Trip implements Serializable{
 			return false;
 		return true;
 	}
+	
+	public List<TripInfo> getTripInfo() {
+		return tripInfo;
+	}
+	public void setTripInfo(List<TripInfo> tripInfo) {
+		this.tripInfo = tripInfo;
+	}
+
 	public Integer getId() {
 		return id;
 	}

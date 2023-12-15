@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity for TripInfo, which is the attribufe from the nm relation between Trip and Customer
@@ -16,12 +17,6 @@ import javax.persistence.MapsId;
 @NamedQuery(name="findAllTripInfoByCustomer", query="SELECT ti FROM TripInfo ti WHERE ti.customer = :customer")
 //Query to get all tripInfo from a Trip
 @NamedQuery(name="findAllTripInfoByTrip", query="SELECT ti FROM TripInfo ti WHERE ti.trip = :trip")
-//Query to update tripInfo
-@NamedQuery(name="updateTripInfo", query="UPDATE TripInfo ti SET ti.initialDate = :initialDate, ti.lastDate = :lastDate WHERE ti.tripInfoId = :tripInfoId")
-//Query to delete tripInfo
-@NamedQuery(name="deleteTripInfo", query="DELETE FROM TripInfo ti WHERE ti.tripInfoId = :tripInfoId")
-//Query to get tripInfo by id
-@NamedQuery(name="findTripInfoById", query="SELECT ti FROM TripInfo ti WHERE ti.tripInfoId = :tripInfoId")
 //QUery to get only tripInfos that are active
 @NamedQuery(name="findActiveTripInfoByCustomer", query="SELECT ti FROM TripInfo ti WHERE ti.customer = :customer AND ti.lastDate > :date")
 //Query to get only tripInfos that are inactive
@@ -67,6 +62,21 @@ public class TripInfo implements Serializable{
 		} else if (!tripInfoId.equals(other.tripInfoId))
 			return false;
 		return true;
+	}
+	@XmlTransient
+	public Trip getTrip() {
+		return trip;
+	}
+
+	public void setTrip(Trip trip) {
+		this.trip = trip;
+	}
+	@XmlTransient
+	public Customer getCustomer() {
+		return customer;
+	}
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 	public Date getInitialDate() {
 		return initialDate;

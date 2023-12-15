@@ -10,4 +10,18 @@ import javax.persistence.Embeddable;
 public class TripInfoId implements Serializable{
 	private Integer tripId;
 	private Integer customerId;
+	
+	public Integer getTripId() {
+		return tripId;
+	}
+	public void setTripId(Integer tripId) {
+		this.tripId = tripId;
+	}
+
+	public Integer getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
 }
