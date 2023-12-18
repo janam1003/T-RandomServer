@@ -3,11 +3,10 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-import static javax.persistence.CascadeType.MERGE;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import static javax.persistence.FetchType.EAGER;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,16 +27,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "city", schema = "g3crud")
 @NamedQueries({
     //Query to get all the Cities
-    @NamedQuery(name = "findAllCity", query = "SELECT cty FROM City cty")
+    @NamedQuery(name = "findAllCity", query = "SELECT c FROM City c")
     ,
     //Query to get the City by Id.
-    @NamedQuery(name = "findCityById", query = "SELECT cty FROM City cty WHERE cty.cityId = :cityId")
+    @NamedQuery(name = "findCityById", query = "SELECT c FROM City c WHERE c.cityId = :cityId")
     ,
     //Query to get the City by Country.
-    @NamedQuery(name = "findAllCityByCountry", query = "SELECT cty FROM City cty WHERE cty.country = :country")
+    @NamedQuery(name = "findAllCityByCountry", query = "SELECT c FROM City c WHERE c.country = :country")
     ,
     //Query to get the City by PopulationType.
-    @NamedQuery(name = "findAllCityBypopulationType", query = "SELECT cty FROM City cty WHERE cty.populationType = :populationType")
+    @NamedQuery(name = "findAllCityBypopulationType", query = "SELECT c FROM City c WHERE c.populationType = :populationType")
 
 })
 @XmlRootElement
@@ -79,7 +78,7 @@ public class City implements Serializable {
     /**
      * Relational field for cities trips.
      */
-    @ManyToMany(mappedBy = "cities")
+    @ManyToMany(mappedBy = "cities", fetch = FetchType.EAGER)
     private Set<Trip> trips;
 
     /**

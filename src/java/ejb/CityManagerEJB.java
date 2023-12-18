@@ -32,7 +32,7 @@ public class CityManagerEJB implements CityManagerEJBLocal {
     /**
      * Entity manager object.
      */
-    @PersistenceContext
+    @PersistenceContext(unitName = "G3CRUDServerPU")
     private EntityManager em;
 
     /**
@@ -73,7 +73,10 @@ public class CityManagerEJB implements CityManagerEJBLocal {
 
         try {
 
-            em.merge(city);
+            if (!em.contains(city)) {
+
+                em.merge(city);
+            }
 
             em.flush();
 
@@ -120,7 +123,7 @@ public class CityManagerEJB implements CityManagerEJBLocal {
      * @throws ReadException If an exception occurs during the read operation.
      */
     @Override
-    public City findCityByCityId(Integer CityId) throws ReadException {
+    public City findCityByCityId(Long CityId) throws ReadException {
 
         City city = null;
 

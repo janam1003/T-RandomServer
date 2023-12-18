@@ -29,15 +29,15 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("city")
-public class CityFacadeREST {
+public class CityREST {
 
     @EJB
     private CityManagerEJBLocal cityEJB;
 
-    private static final Logger LOGGER = Logger.getLogger(CityFacadeREST.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CityREST.class.getName());
 
     @POST
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
     public void createCity(City entity) {
 
         try {
@@ -56,7 +56,7 @@ public class CityFacadeREST {
     }
 
     @PUT
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
     public void updateCity(City entity) {
 
         try {
@@ -74,8 +74,51 @@ public class CityFacadeREST {
         }
     }
 
+    @DELETE
+    @Path("{cityId}")
+    public void deleteCity(@PathParam("cityId") Long cityId) {
+
+        try {
+
+            LOGGER.log(Level.INFO, "Deleting City {0}", cityId);
+
+            cityEJB.deleteCity(cityEJB.findCityByCityId(cityId));
+
+        } catch (ReadException | DeleteException ex) {
+
+            LOGGER.severe(ex.getMessage());
+
+            throw new InternalServerErrorException(ex.getMessage());
+
+        }
+    }
+
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{cityId}")
+    @Produces({MediaType.APPLICATION_XML})
+    public City findCityByCId(@PathParam("cityId") Long cityId) {
+
+        City city = null;
+
+        try {
+
+            LOGGER.log(Level.INFO, "getting city by cityId");
+
+            city = cityEJB.findCityByCityId(cityId);
+
+        } catch (ReadException ex) {
+
+            LOGGER.severe(ex.getMessage());
+
+            throw new InternalServerErrorException(ex.getMessage());
+
+        }
+
+        return city;
+    }
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML})
     public List<City> findAllCity() {
 
         List<City> cities = null;
@@ -99,7 +142,7 @@ public class CityFacadeREST {
 
     @GET
     @Path("findAllCityByCountry/{country}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public List<City> findAllCityByCountry(@PathParam("country") String country) {
 
         List<City> cities = null;
@@ -121,4 +164,27 @@ public class CityFacadeREST {
         return cities;
     }
 
+    @GET
+    @Path("findAllCityBypopulationType/{populationType}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<City> findAllCityBypopulationType(@PathParam("populationType") PopulationType populationType) {
+
+        List<City> cities = null;
+
+        try {
+
+            LOGGER.log(Level.INFO, "getting city by populationType");
+
+            cities = cityEJB.findAllCitiesBypopulationType(populationType);
+
+        } catch (ReadException ex) {
+
+            LOGGER.severe(ex.getMessage());
+
+            throw new InternalServerErrorException(ex.getMessage());
+
+        }
+
+        return cities;
+    }
 }

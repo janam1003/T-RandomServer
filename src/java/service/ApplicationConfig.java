@@ -24,11 +24,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
 
-        resources.add(service.CityFacadeREST.class);
-        resources.add(service.CustomerFacadeREST.class);
-        resources.add(service.TripFacadeREST.class);
-        resources.add(service.TripInfoFacadeREST.class);
-        resources.add(service.UserFacadeREST.class);
+        resources.add(service.CityREST.class);
 
     }
 }
