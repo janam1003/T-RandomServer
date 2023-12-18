@@ -7,18 +7,20 @@ import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  * EJB Local Interface for managing City entity CRUD operations.
  *
  * @author Janam
  */
+@Local
 public interface CityManagerEJBLocal {
 
     /**
      * Creates a City and stores it in the underlying application storage.
      *
-     * @param City The {@link City} object containing the City data.
+     * @param city The {@link City} object containing the City data.
      * @throws CreateException If there is any Exception during processing.
      */
     public void createCity(City city) throws CreateException;
@@ -26,7 +28,7 @@ public interface CityManagerEJBLocal {
     /**
      * Updates a City's data in the underlying application storage.
      *
-     * @param City The {@link City} object containing the trip data.
+     * @param city The {@link City} object containing the trip data.
      * @throws UpdateException If there is any Exception during processing.
      */
     public void updateCity(City city) throws UpdateException;
@@ -34,7 +36,7 @@ public interface CityManagerEJBLocal {
     /**
      * Deletes a City's data in the underlying application storage.
      *
-     * @param City The {@link City} object containing the trip data.
+     * @param city The {@link City} object containing the trip data.
      * @throws DeleteException If there is any Exception during processing.
      */
     public void deleteCity(City city) throws DeleteException;

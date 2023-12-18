@@ -1,18 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
+import ejbLocal.CityManagerEJBLocal;
 import entities.City;
+import entities.PopulationType;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -22,70 +25,100 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Janam
  */
 @Stateless
-@Path("entities.city")
-public class CityFacadeREST extends AbstractFacade<City> {
+@Path("city")
+public class CityFacadeREST {
 
-    @PersistenceContext(unitName = "G3CRUDServerPU")
-    private EntityManager em;
+    @EJB
+    private CityManagerEJBLocal cityEJB;
 
-    public CityFacadeREST() {
-        super(City.class);
-    }
+    private static final Logger LOGGER = Logger.getLogger(CityFacadeREST.class.getName());
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(City entity) {
-        super.create(entity);
+    public void createCity(City entity) {
+
+        try {
+
+            LOGGER.log(Level.INFO, "Creating a City");
+
+            cityEJB.createCity(entity);
+
+        } catch (CreateException ex) {
+
+            LOGGER.severe(ex.getMessage());
+
+            throw new InternalServerErrorException(ex.getMessage());
+
+        }
     }
 
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, City entity) {
-        super.edit(entity);
-    }
+    public void updateCity(City entity) {
 
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+        try {
+
+            LOGGER.log(Level.INFO, "updating a City");
+
+            cityEJB.updateCity(entity);
+
+        } catch (UpdateException ex) {
+
+            LOGGER.severe(ex.getMessage());
+
+            throw new InternalServerErrorException(ex.getMessage());
+
+        }
     }
 
     @GET
-    @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public City find(@PathParam("id") Long id) {
-        return super.find(id);
+    public List<City> findAllCity() {
+
+        List<City> cities = null;
+
+        try {
+
+            LOGGER.log(Level.INFO, "getting all city");
+
+            cities = cityEJB.findAllCities();
+
+        } catch (ReadException ex) {
+
+            LOGGER.severe(ex.getMessage());
+
+            throw new InternalServerErrorException(ex.getMessage());
+
+        }
+
+        return cities;
     }
 
     @GET
-    @Override
+    @Path("findAllCityByCountry/{country}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<City> findAll() {
-        return super.findAll();
+    public List<City> findAllCityByCountry(@PathParam("country") String country) {
+
+        List<City> cities = null;
+
+        try {
+
+            LOGGER.log(Level.INFO, "getting city by country");
+
+            cities = cityEJB.findAllCityByCountry(country);
+
+        } catch (ReadException ex) {
+
+            LOGGER.severe(ex.getMessage());
+
+            throw new InternalServerErrorException(ex.getMessage());
+
+        }
+
+        return cities;
     }
 
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<City> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }
