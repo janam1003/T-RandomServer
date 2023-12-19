@@ -5,7 +5,9 @@
  */
 package service;
 
+import ejbLocal.CustomerManagerEJBLocal;
 import ejbLocal.TripInfoManagerEJBLocal;
+import ejbLocal.TripManagerEJBLocal;
 import entities.Customer;
 import entities.Trip;
 import entities.TripInfo;
@@ -28,6 +30,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import ejb.TripManagerEJB;
+
 
 /**
  * RESTful web service class exposing CRUD operations for {@link TripInfo} entities.
@@ -45,6 +49,18 @@ public class TripInfoREST {
      */
     @EJB
     private TripInfoManagerEJBLocal ejb;
+
+	/**
+	 * EJB reference for business logic object.
+	 */
+	@EJB
+	private CustomerManagerEJBLocal customerEjb;
+
+	/**
+	 * EJB reference for business logic object.
+	 */
+	@EJB
+	private TripManagerEJBLocal tripEjb;
 
     /**
      * RESTful POST method for creating {@link TripInfo} objects from XML representation.
@@ -92,11 +108,7 @@ public class TripInfoREST {
         try {
             LOGGER.log(Level.INFO, "TripInfoRESTful service: delete TripInfo by id={0}.", id);
             TripInfo tripInfo = ejb.findTripInfoById(id);
-            if (tripInfo != null) {
-                ejb.deleteTripInfo(tripInfo);
-            } else {
-                throw new NotFoundException("TripInfo not found");
-            }
+            ejb.deleteTripInfo(tripInfo);
         } catch (ReadException | DeleteException ex) {
             LOGGER.log(Level.SEVERE,
                     "TripInfoRESTful service: Exception deleting tripInfo by id, {0}",
@@ -114,13 +126,10 @@ public class TripInfoREST {
     @Path("{id}")
     @Produces({"application/xml"})
     public TripInfo find(@PathParam("id") Integer id) {
-        TripInfo tripInfo = null;
+		TripInfo tripInfo = null;
         try {
             LOGGER.log(Level.INFO, "TripInfoRESTful service: find TripInfo by id={0}.", id);
             tripInfo = ejb.findTripInfoById(id);
-            if (tripInfo == null) {
-                throw new NotFoundException("TripInfo not found");
-            }
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
                     "TripInfoRESTful service: Exception reading tripInfo by id, {0}",
@@ -130,25 +139,91 @@ public class TripInfoREST {
         return tripInfo;
     }
     /**
-     * RESTful GET method for reading all {@link TripInfo} objects that has a certain profile
-     * through an XML representation.
-     * @param trip The profile value for the object.
-     * @return A List of TripInfo objects containing data.
+     * RESTful GET method for reading all {@link TripInfo} objects associated with a given trip.
+     * @param tripId The id of the trip for which to retrieve TripInfo objects.
+     * @return A List of {@link TripInfo} objects.
      */
     @GET
-    @Path("trip/{trip}")
+    @Path("allByTrip/{tripId}")
     @Produces({"application/xml"})
-    public List<TripInfo> findAllTripInfoByTrip(@PathParam("trip") Trip trip) {
-        List<TripInfo> tripInfo=null;
+    public List<TripInfo> findAllTripInfoByTrip(@PathParam("tripId") Integer tripId) {
+		List<TripInfo> tripInfoList = null;
         try {
-            LOGGER.log(Level.INFO,"UserRESTful service: find all TripInfo by trip {0}.",trip);
-            tripInfo=ejb.findAllTripInfoByTrip(trip);
+			Trip trip = tripEjb.findTripById(tripId);
+            tripInfoList = ejb.findAllTripInfoByTrip(trip);
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
-                    "UserRESTful service: Exception reading TripInfo by Trip, {0}",
+                    "TripInfoRESTful service: Exception reading all TripInfo by trip, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
-        return tripInfo;
+		return tripInfoList;
+	}
+    /**
+     * RESTful GET method for reading all active {@link TripInfo} objects associated with a given Customer.
+     * @param mail The mail of the Customer for which to retrieve active TripInfo objects.
+     * @param date The current date for comparison.
+     * @return A List of active {@link TripInfo} objects.
+     */
+    @GET
+    @Path("active/{mail}/{date}")
+    @Produces({"application/xml"})
+    public List<TripInfo> findActiveTripInfoByCustomer(@PathParam("mail") String mail, @PathParam("date") Date date) {
+        List<TripInfo> tripInfoList = null;
+		try {
+            Customer customer = customerEjb.findCustomerByMail(mail);
+            return ejb.findActiveTripsByCustomer(customer, date);
+        } catch (ReadException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "TripInfoRESTful service: Exception reading active TripInfo by customer, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+		return tripInfoList;
+    }
+
+    /**
+     * RESTful GET method for reading all inactive {@link TripInfo} objects associated with a given Customer.
+     * @param mail The mail of the Customer for which to retrieve inactive TripInfo objects.
+     * @param date The current date for comparison.
+     * @return A List of inactive {@link TripInfo} objects.
+     */
+    @GET
+    @Path("inactive/{mail}/{date}")
+    @Produces({"application/xml"})
+    public List<TripInfo> findInactiveTripInfoByCustomer(@PathParam("mail") String mail, @PathParam("date") Date date) {
+        List<TripInfo> tripInfoList = null;
+		try {
+            Customer customer = customerEjb.findCustomerByMail(mail);
+            return ejb.findInactiveTripsByCustomer(customer, date);
+        } catch (ReadException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "TripInfoRESTful service: Exception reading inactive TripInfo by customer, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+		return tripInfoList;
+    }
+
+	/**
+     * RESTful GET method for reading all {@link TripInfo} objects associated with a given Customer.
+     * @param mail The mail of the Customer for which to retrieve TripInfo objects.
+     * @return A List of {@link TripInfo} objects.
+     */
+    @GET
+    @Path("allByCustomer/{mail}")
+    @Produces({"application/xml"})
+    public List<TripInfo> findAllTripInfoByCustomer(@PathParam("mail") String mail) {
+        List<TripInfo> tripInfoList = null;
+		try {
+            Customer customer = customerEjb.findCustomerByMail(mail);
+            return ejb.findAllTripInfoByCustomer(customer);
+        } catch (ReadException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "TripInfoRESTful service: Exception reading all TripInfo by customer, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+		return tripInfoList;
     }
 }

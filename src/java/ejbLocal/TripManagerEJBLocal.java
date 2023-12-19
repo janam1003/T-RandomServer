@@ -24,24 +24,7 @@ public interface TripManagerEJBLocal {
      */
     public Trip findTripById(Integer id) throws ReadException;
 
-    /**
-     * Finds a List of {@link Trip} objects containing data for all trips in the
-     * application data storage.
-     * @return A List of {@link Trip} objects.
-     * @throws ReadException If there is any Exception during processing.
-     */
-    public List<Trip> findAllTrips() throws ReadException;
-
-    /**
-     * Finds a List of {@link Trip} objects containing data for all trips with a certain
-     * tripType value.
-     * @param tripType The tripType value for the trips to be found.
-     * @return A List of {@link Trip} objects.
-     * @throws ReadException If there is any Exception during processing.
-     */
-    public List<Trip> findTripsByTripType(EnumTripType tripType) throws ReadException;
-
-    /**
+	/**
      * Creates a Trip and stores it in the underlying application storage. 
      * @param trip The {@link Trip} object containing the trip data. 
      * @throws CreateException If there is any Exception during processing.
@@ -61,5 +44,23 @@ public interface TripManagerEJBLocal {
      * @throws DeleteException If there is any Exception during processing.
      */
     public void deleteTrip(Trip trip) throws DeleteException;
+
+    /**
+     * Finds a List of {@link Trip} objects containing data for all trips in the
+     * application data storage.
+     * @return A List of {@link Trip} objects.
+     * @throws ReadException If there is any Exception during processing.
+     */
+    public List<Trip> findAllTrips() throws ReadException;
+
+    /**
+     * Finds a List of {@link Trip} objects containing data for all trips with a certain
+     * tripType value.
+     * @param tripType The tripType value for the trips to be found.
+     * @return A List of {@link Trip} objects.
+     * @throws ReadException If there is any Exception during processing.
+     */
+    public List<Trip> findTripsByTripType(EnumTripType tripType) throws ReadException;
+
 }
 
