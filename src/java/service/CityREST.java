@@ -24,6 +24,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
+ * The CityREST class provides RESTful web services for managing City entities.
+ * It exposes CRUD operations (Create, Read, Update, Delete) and additional
+ * methods for retrieving cities based on various criteria.
+ *
+ * This class utilizes the CityManagerEJBLocal EJB to interact with the
+ * underlying business logic for city management.
  *
  * @author Janam
  */
@@ -34,10 +40,18 @@ public class CityREST {
     @EJB
     private CityManagerEJBLocal cityEJB;
 
+    // Logger
     private static final Logger LOGGER = Logger.getLogger(CityREST.class.getName());
 
+    /**
+     * Creates a new City using the provided entity.
+     *
+     * @param entity The City entity to be created.
+     * @throws InternalServerErrorException If an internal server error occurs
+     * during the creation process.
+     */
     @POST
-    @Consumes({MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createCity(City entity) {
 
         try {
@@ -55,8 +69,15 @@ public class CityREST {
         }
     }
 
+    /**
+     * Updates an existing City with the provided entity.
+     *
+     * @param entity The City entity containing updated information.
+     * @throws InternalServerErrorException If an internal server error occurs
+     * during the update process.
+     */
     @PUT
-    @Consumes({MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateCity(City entity) {
 
         try {
@@ -74,6 +95,13 @@ public class CityREST {
         }
     }
 
+    /**
+     * Deletes a City with the specified cityId.
+     *
+     * @param cityId The unique identifier of the City to be deleted.
+     * @throws InternalServerErrorException If an internal server error occurs
+     * during the deletion process.
+     */
     @DELETE
     @Path("{cityId}")
     public void deleteCity(@PathParam("cityId") Long cityId) {
@@ -93,9 +121,17 @@ public class CityREST {
         }
     }
 
+    /**
+     * Retrieves a City by its unique identifier (cityId).
+     *
+     * @param cityId The unique identifier of the City to be retrieved.
+     * @return The City object corresponding to the provided cityId.
+     * @throws InternalServerErrorException If an internal server error occurs
+     * during the retrieval process.
+     */
     @GET
     @Path("{cityId}")
-    @Produces({MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public City findCityByCId(@PathParam("cityId") Long cityId) {
 
         City city = null;
@@ -117,8 +153,15 @@ public class CityREST {
         return city;
     }
 
+    /**
+     * Retrieves a list of all City entities.
+     *
+     * @return A list containing all City entities.
+     * @throws InternalServerErrorException If an internal server error occurs
+     * during the retrieval process.
+     */
     @GET
-    @Produces({MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<City> findAllCity() {
 
         List<City> cities = null;
@@ -140,9 +183,18 @@ public class CityREST {
         return cities;
     }
 
+    /**
+     * Retrieves a list of City entities based on the specified country.
+     *
+     * @param country The name of the country for which cities are to be
+     * retrieved.
+     * @return A list of City entities belonging to the specified country.
+     * @throws InternalServerErrorException If an internal server error occurs
+     * during the retrieval process.
+     */
     @GET
     @Path("findAllCityByCountry/{country}")
-    @Produces({MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<City> findAllCityByCountry(@PathParam("country") String country) {
 
         List<City> cities = null;
@@ -164,9 +216,19 @@ public class CityREST {
         return cities;
     }
 
+    /**
+     * Retrieves a list of City entities based on the specified population type.
+     *
+     * @param populationType The type of population for which cities are to be
+     * retrieved.
+     * @return A list of City entities belonging to the specified population
+     * type.
+     * @throws InternalServerErrorException If an internal server error occurs
+     * during the retrieval process.
+     */
     @GET
     @Path("findAllCityBypopulationType/{populationType}")
-    @Produces({MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<City> findAllCityBypopulationType(@PathParam("populationType") PopulationType populationType) {
 
         List<City> cities = null;
