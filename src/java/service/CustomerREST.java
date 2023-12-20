@@ -111,6 +111,11 @@ public class CustomerREST{
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
+	/**
+	 * Test para push
+	 * @param id
+	 * @return
+	 */
 
     @DELETE
     @Path("/{id}")
