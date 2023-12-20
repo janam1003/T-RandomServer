@@ -14,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -54,13 +53,11 @@ public class City implements Serializable {
     /**
      * Name of the City.
      */
-    @NotNull
     private String name;
 
     /**
      * Name of country of that City.
      */
-    @NotNull
     private String country;
 
     /**
@@ -86,25 +83,6 @@ public class City implements Serializable {
      */
     public City() {
 
-    }
-
-    /**
-     * Constructor with params.
-     *
-     * @param cityId
-     * @param name
-     * @param country
-     * @param populationType
-     * @param weatherType
-     * @param trips
-     */
-    public City(Long cityId, String name, String country, PopulationType populationType, WeatherType weatherType, Set<Trip> trips) {
-        this.cityId = cityId;
-        this.name = name;
-        this.country = country;
-        this.populationType = populationType;
-        this.weatherType = weatherType;
-        this.trips = trips;
     }
 
     /**

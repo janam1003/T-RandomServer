@@ -132,7 +132,7 @@ public class CityREST {
     @GET
     @Path("{cityId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public City findCityByCId(@PathParam("cityId") Long cityId) {
+    public City findCityById(@PathParam("cityId") Long cityId) {
 
         City city = null;
 
