@@ -25,6 +25,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
 
         resources.add(service.TripInfoREST.class);
+        resources.add(service.TripREST.class);
 
     }
 }

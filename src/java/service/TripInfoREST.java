@@ -31,6 +31,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import ejb.TripManagerEJB;
+import java.util.Date;
 
 
 /**
@@ -162,40 +163,38 @@ public class TripInfoREST {
     /**
      * RESTful GET method for reading all active {@link TripInfo} objects associated with a given Customer.
      * @param mail The mail of the Customer for which to retrieve active TripInfo objects.
-     * @param date The current date for comparison.
      * @return A List of active {@link TripInfo} objects.
      */
     @GET
-    @Path("active/{mail}/{date}")
+    @Path("active/{mail}")
     @Produces({"application/xml"})
-    public List<TripInfo> findActiveTripInfoByCustomer(@PathParam("mail") String mail, @PathParam("date") Date date) {
+    public List<TripInfo> findActiveTripInfoByCustomer(@PathParam("mail") String mail) {
         List<TripInfo> tripInfoList = null;
-		try {
+        try {
             Customer customer = customerEjb.findCustomerByMail(mail);
-            return ejb.findActiveTripsByCustomer(customer, date);
+            tripInfoList = ejb.findActiveTripInfoByCustomer(customer);
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
                     "TripInfoRESTful service: Exception reading active TripInfo by customer, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
-		return tripInfoList;
+	return tripInfoList;
     }
 
     /**
      * RESTful GET method for reading all inactive {@link TripInfo} objects associated with a given Customer.
      * @param mail The mail of the Customer for which to retrieve inactive TripInfo objects.
-     * @param date The current date for comparison.
      * @return A List of inactive {@link TripInfo} objects.
      */
     @GET
-    @Path("inactive/{mail}/{date}")
+    @Path("inactive/{mail}")
     @Produces({"application/xml"})
-    public List<TripInfo> findInactiveTripInfoByCustomer(@PathParam("mail") String mail, @PathParam("date") Date date) {
+    public List<TripInfo> findInactiveTripInfoByCustomer(@PathParam("mail") String mail) {
         List<TripInfo> tripInfoList = null;
-		try {
+	try {
             Customer customer = customerEjb.findCustomerByMail(mail);
-            return ejb.findInactiveTripsByCustomer(customer, date);
+            tripInfoList = ejb.findInactiveTripInfoByCustomer(customer);
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
                     "TripInfoRESTful service: Exception reading inactive TripInfo by customer, {0}",
@@ -217,13 +216,13 @@ public class TripInfoREST {
         List<TripInfo> tripInfoList = null;
 		try {
             Customer customer = customerEjb.findCustomerByMail(mail);
-            return ejb.findAllTripInfoByCustomer(customer);
+            tripInfoList = ejb.findAllTripInfoByCustomer(customer);
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
                     "TripInfoRESTful service: Exception reading all TripInfo by customer, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
-		return tripInfoList;
+	return tripInfoList;
     }
 }

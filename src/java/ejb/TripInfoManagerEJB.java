@@ -154,15 +154,15 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
     /**
      * Finds all active {@link TripInfo} objects associated with a given Customer.
      * @param customer The Customer for which to retrieve active TripInfo objects.
-     * @param date The current date for comparison.
      * @return A List of active {@link TripInfo} objects.
      * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public List<TripInfo> findActiveTripInfoByCustomer(Customer customer, Date date) throws ReadException {
+    public List<TripInfo> findActiveTripInfoByCustomer(Customer customer) throws ReadException {
         List<TripInfo> tripInfos = null;
         try {
             LOGGER.info("TripInfoManager: Finding active tripInfos by customer.");
+			Date date = new Date();
             tripInfos = em.createNamedQuery("findActiveTripInfoByCustomer")
                     .setParameter("customer", customer)
                     .setParameter("date", date)
@@ -177,15 +177,15 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
     /**
      * Finds all inactive {@link TripInfo} objects associated with a given Customer.
      * @param customer The Customer for which to retrieve inactive TripInfo objects.
-     * @param date The current date for comparison.
      * @return A List of inactive {@link TripInfo} objects.
      * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public List<TripInfo> findInactiveTripInfoByCustomer(Customer customer, Date date) throws ReadException {
+    public List<TripInfo> findInactiveTripInfoByCustomer(Customer customer) throws ReadException {
         List<TripInfo> tripInfos = null;
         try {
             LOGGER.info("TripInfoManager: Finding inactive tripInfos by customer.");
+			Date date = new Date();
 			tripInfos = em.createNamedQuery("findInactiveTripInfoByCustomer")
                     .setParameter("customer", customer)
                     .setParameter("date", date)
