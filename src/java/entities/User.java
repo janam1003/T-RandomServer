@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -36,13 +37,17 @@ public class User implements Serializable {
      */
     private String password;
     /**
+     * The date of the User creation.
+     */
+    private Date creationDate;
+    /**
      * {@link EnumUserType} value for the user.
      */
     @Enumerated(EnumType.ORDINAL)
     private EnumUserType userType;
     /**
      * Gets mail value for user.
-     * @return The login value.
+     * @return The mail value.
      */
     public String getMail() {
         return mail;
@@ -67,6 +72,20 @@ public class User implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+    /**
+     * Gets creationDate value for user.
+     * @return The creationDate value.
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+    /**
+     * Sets creationDate value for user.
+     * @param creationDate The login value.
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
     /**
      * Gets Profile value for user.
