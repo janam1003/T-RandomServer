@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ejbLocal;
 
 import entities.Customer;
@@ -48,25 +53,4 @@ public interface CustomerManagerEJBLocal {
      * @return A list of customers with names containing the specified partial name.
      */
     List<Customer> findCustomersByNameContaining(String partialName);
-
-    /**
-     * Creates a new customer.
-     *
-     * @param customer The customer to be created.
-     */
-    void createCustomer(Customer customer);
-
-    /**
-     * Updates an existing customer.
-     *
-     * @param customer The customer to be updated.
-     */
-    void updateCustomer(Customer customer);
-
-    /**
-     * Deletes a customer by their ID.
-     *
-     * @param customerId The ID of the customer to be deleted.
-     */
-    void deleteCustomer(Long customerId);
 }

@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ejb;
 
 import ejbLocal.CustomerManagerEJBLocal;
@@ -16,6 +21,7 @@ import java.util.logging.Logger;
  * EJB for managing Customer entities.
  */
 @Stateless
+@Local(CustomerManagerEJBLocal.class)
 public class CustomerManagerEJB {
 
     @PersistenceContext
@@ -101,56 +107,6 @@ public class CustomerManagerEJB {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers by name containing: " + partialName, e);
             throw new RuntimeException("Error retrieving customers by name containing: " + partialName, e);
-        }
-    }
-
-    /**
-     * Creates a new customer.
-     *
-     * @param customer The customer to be created.
-     */
-    public void createCustomer(Customer customer) {
-        try {
-            entityManager.persist(customer);
-            LOGGER.log(Level.INFO, "Created customer with email: {0}", customer.getMail());
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error creating customer", e);
-            throw new RuntimeException("Error creating customer", e);
-        }
-    }
-
-    /**
-     * Updates an existing customer.
-     *
-     * @param customer The customer to be updated.
-     */
-    public void updateCustomer(Customer customer) {
-        try {
-            entityManager.merge(customer);
-            LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error updating customer", e);
-            throw new RuntimeException("Error updating customer", e);
-        }
-    }
-
-    /**
-     * Deletes a customer by their ID.
-     *
-     * @param customerId The ID of the customer to be deleted.
-     */
-    public void deleteCustomer(Long customerId) {
-        try {
-            Customer customer = entityManager.find(Customer.class, customerId);
-            if (customer != null) {
-                entityManager.remove(customer);
-                LOGGER.log(Level.INFO, "Deleted customer with id: {0}", customerId);
-            } else {
-                LOGGER.log(Level.WARNING, "Customer with id {0} not found", customerId);
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error deleting customer", e);
-            throw new RuntimeException("Error deleting customer", e);
         }
     }
 }
