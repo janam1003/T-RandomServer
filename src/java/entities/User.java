@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "user", schema = "g3CRUD")
-@Inheritance( strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance( strategy = InheritanceType.JOINED)
 @XmlRootElement
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -32,9 +33,13 @@ public class User implements Serializable {
     @Id
     private String mail;
     /**
-     * Full name of the user.
+     * Password of the user.
      */
     private String password;
+       /**
+     * The date of the User creation.
+     */
+    private Date creationDate;
     /**
      * {@link EnumUserType} value for the user.
      */
@@ -42,7 +47,7 @@ public class User implements Serializable {
     private EnumUserType userType;
     /**
      * Gets mail value for user.
-     * @return The login value.
+     * @return The mail value.
      */
     public String getMail() {
         return mail;
@@ -67,6 +72,20 @@ public class User implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+    /**
+     * Gets creationDate value for user.
+     * @return The creationDate value.
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+    /**
+     * Sets creationDate value for user.
+     * @param creationDate The login value.
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
     /**
      * Gets Profile value for user.

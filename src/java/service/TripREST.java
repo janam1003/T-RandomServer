@@ -30,7 +30,7 @@ public class TripREST {
     /**
      * Logger for class methods.
      */
-    private static final Logger LOGGER = Logger.getLogger("javafxserverside");
+    private static final Logger LOGGER = Logger.getLogger("restInfo");
 
     /**
      * EJB reference for business logic object.

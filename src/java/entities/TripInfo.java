@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -37,12 +38,11 @@ public class TripInfo implements Serializable{
 	@EmbeddedId
 	TripInfoId tripInfoId;
 
-
-	@MapsId("tripId")
+        @JoinColumn(name="tripId", updatable=false, insertable=false)
 	@ManyToOne
 	Trip trip;
 
-	@MapsId("customerId")
+	@JoinColumn(name="customerId", updatable=false, insertable=false)
 	@ManyToOne
 	Customer customer;
 

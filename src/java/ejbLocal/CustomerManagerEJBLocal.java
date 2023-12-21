@@ -53,4 +53,24 @@ public interface CustomerManagerEJBLocal {
      * @return A list of customers with names containing the specified partial name.
      */
     List<Customer> findCustomersByNameContaining(String partialName);
+        /**
+     * Creates a new customer.
+     *
+     * @param customer The customer to be created.
+     */
+    void createCustomer(Customer customer);
+
+    /**
+     * Updates an existing customer.
+     *
+     * @param customer The customer to be updated.
+     */
+    void updateCustomer(Customer customer);
+
+    /**
+     * Deletes a customer by their ID.
+     *
+     * @param customerId The ID of the customer to be deleted.
+     */
+    void deleteCustomer(Long customerId);
 }
