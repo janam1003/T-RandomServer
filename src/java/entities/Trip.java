@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     //Query to get all the trips
     @NamedQuery(name="findAllTrips", query="SELECT t FROM Trip t"),
     //Query to get a trip with the tripType
-    @NamedQuery(name="findTripByTripType", query="SELECT t FROM Trip t WHERE t.tripType = :tripType")
+    @NamedQuery(name="findTripsByTripType", query="SELECT t FROM Trip t WHERE t.tripType = :tripType")
 })
 @XmlRootElement
 public class Trip implements Serializable{

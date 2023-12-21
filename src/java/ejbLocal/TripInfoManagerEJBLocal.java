@@ -65,18 +65,16 @@ public interface TripInfoManagerEJBLocal {
     /**
      * Finds all active {@link TripInfo} objects associated with a given Customer.
      * @param customer The Customer for which to retrieve active TripInfo objects.
-     * @param date The current date for comparison.
      * @return A List of active {@link TripInfo} objects.
      * @throws ReadException If there is any Exception during processing.
      */
-    public List<TripInfo> findActiveTripInfoByCustomer(Customer customer, Date date) throws ReadException;
+    public List<TripInfo> findActiveTripInfoByCustomer(Customer customer) throws ReadException;
 
     /**
      * Finds all inactive {@link TripInfo} objects associated with a given Customer.
      * @param customer The Customer for which to retrieve inactive TripInfo objects.
-     * @param date The current date for comparison.
      * @return A List of inactive {@link TripInfo} objects.
      * @throws ReadException If there is any Exception during processing.
      */
-    public List<TripInfo> findInactiveTripInfoByCustomer(Customer customer, Date date) throws ReadException;
+    public List<TripInfo> findInactiveTripInfoByCustomer(Customer customer) throws ReadException;
 }

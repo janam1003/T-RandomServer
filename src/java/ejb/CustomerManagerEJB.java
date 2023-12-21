@@ -21,8 +21,7 @@ import java.util.logging.Logger;
  * EJB for managing Customer entities.
  */
 @Stateless
-@Local(CustomerManagerEJBLocal.class)
-public class CustomerManagerEJB {
+public class CustomerManagerEJB implements CustomerManagerEJBLocal{
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -34,14 +33,17 @@ public class CustomerManagerEJB {
      *
      * @return A list of all customers.
      */
+    @Override
     public List<Customer> findAllCustomers() {
+        List<Customer> customers= null;
         try {
-            TypedQuery<Customer> query = entityManager.createNamedQuery("findAllCustomers", Customer.class);
-            return query.getResultList();
+             customers=entityManager.createNamedQuery("findAllCustomers", Customer.class).getResultList();
+            
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
             throw new RuntimeException("Error retrieving all customers", e);
         }
+        return customers;
     }
 
     /**
@@ -50,6 +52,7 @@ public class CustomerManagerEJB {
      * @param mail The email address of the customer.
      * @return The customer with the specified email address.
      */
+    @Override
     public Customer findCustomerByMail(String mail) {
         try {
             TypedQuery<Customer> query = entityManager.createNamedQuery("findCustomersByMail", Customer.class);
@@ -66,6 +69,7 @@ public class CustomerManagerEJB {
      *
      * @return A list of customers with associated trips.
      */
+    @Override
     public List<Customer> findCustomersWithTrips() {
         try {
             TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findWithTrips", Customer.class);
@@ -82,6 +86,7 @@ public class CustomerManagerEJB {
      * @param customerAddress The address to filter by.
      * @return A list of customers with the specified address.
      */
+    @Override
     public List<Customer> findCustomersByAddress(String customerAddress) {
         try {
             TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findByAddress", Customer.class);
@@ -99,6 +104,7 @@ public class CustomerManagerEJB {
      * @param partialName The partial name to search for.
      * @return A list of customers with names containing the specified partial name.
      */
+    @Override
     public List<Customer> findCustomersByNameContaining(String partialName) {
         try {
             TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findByNameContaining", Customer.class);
@@ -107,6 +113,58 @@ public class CustomerManagerEJB {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers by name containing: " + partialName, e);
             throw new RuntimeException("Error retrieving customers by name containing: " + partialName, e);
+        }
+    }
+    /**
+     * Creates a new customer.
+     *
+     * @param customer The customer to be created.
+     */
+    @Override
+    public void createCustomer(Customer customer) {
+        try {
+            entityManager.persist(customer);
+            LOGGER.log(Level.INFO, "Created customer with email: {0}", customer.getMail());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error creating customer", e);
+            throw new RuntimeException("Error creating customer", e);
+        }
+    }
+
+    /**
+     * Updates an existing customer.
+     *
+     * @param customer The customer to be updated.
+     */
+    @Override
+    public void updateCustomer(Customer customer) {
+        try {
+            entityManager.merge(customer);
+            LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error updating customer", e);
+            throw new RuntimeException("Error updating customer", e);
+        }
+    }
+
+    /**
+     * Deletes a customer by their ID.
+     *
+     * @param customerId The ID of the customer to be deleted.
+     */
+    @Override
+    public void deleteCustomer(Long customerId) {
+        try {
+            Customer customer = entityManager.find(Customer.class, customerId);
+            if (customer != null) {
+                entityManager.remove(customer);
+                LOGGER.log(Level.INFO, "Deleted customer with id: {0}", customerId);
+            } else {
+                LOGGER.log(Level.WARNING, "Customer with id {0} not found", customerId);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error deleting customer", e);
+            throw new RuntimeException("Error deleting customer", e);
         }
     }
 }
