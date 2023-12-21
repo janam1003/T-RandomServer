@@ -3,11 +3,10 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-import static javax.persistence.CascadeType.MERGE;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import static javax.persistence.FetchType.EAGER;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,16 +26,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "city", schema = "g3crud")
 @NamedQueries({
     //Query to get all the Cities
-    @NamedQuery(name = "findAllCity", query = "SELECT cty FROM City cty")
+    @NamedQuery(name = "findAllCity", query = "SELECT c FROM City c")
     ,
     //Query to get the City by Id.
-    @NamedQuery(name = "findCityById", query = "SELECT cty FROM City cty WHERE cty.cityId = :cityId")
+    @NamedQuery(name = "findCityById", query = "SELECT c FROM City c WHERE c.cityId = :cityId")
     ,
     //Query to get the City by Country.
-    @NamedQuery(name = "findAllCityByCountry", query = "SELECT cty FROM City cty WHERE cty.country = :country")
+    @NamedQuery(name = "findAllCityByCountry", query = "SELECT c FROM City c WHERE c.country = :country")
     ,
     //Query to get the City by PopulationType.
-    @NamedQuery(name = "findAllCityBypopulationType", query = "SELECT cty FROM City cty WHERE cty.populationType = :populationType")
+    @NamedQuery(name = "findAllCityBypopulationType", query = "SELECT c FROM City c WHERE c.populationType = :populationType")
 
 })
 @XmlRootElement
@@ -55,13 +53,11 @@ public class City implements Serializable {
     /**
      * Name of the City.
      */
-    @NotNull
     private String name;
 
     /**
      * Name of country of that City.
      */
-    @NotNull
     private String country;
 
     /**
@@ -79,7 +75,7 @@ public class City implements Serializable {
     /**
      * Relational field for cities trips.
      */
-    @ManyToMany(mappedBy = "cities")
+    @ManyToMany(mappedBy = "cities", fetch = FetchType.EAGER)
     private Set<Trip> trips;
 
     /**
@@ -87,25 +83,6 @@ public class City implements Serializable {
      */
     public City() {
 
-    }
-
-    /**
-     * Constructor with params.
-     *
-     * @param cityId
-     * @param name
-     * @param country
-     * @param populationType
-     * @param weatherType
-     * @param trips
-     */
-    public City(Long cityId, String name, String country, PopulationType populationType, WeatherType weatherType, Set<Trip> trips) {
-        this.cityId = cityId;
-        this.name = name;
-        this.country = country;
-        this.populationType = populationType;
-        this.weatherType = weatherType;
-        this.trips = trips;
     }
 
     /**

@@ -23,7 +23,7 @@ public class ApplicationConfig extends Application {
      * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-
+        resources.add(service.CityREST.class);
         resources.add(service.CustomerREST.class);
         resources.add(service.TripInfoREST.class);
         resources.add(service.TripREST.class);

@@ -48,7 +48,7 @@ public interface CityManagerEJBLocal {
      * @return The {@link City} object containing trip data.
      * @throws ReadException If there is any Exception during processing.
      */
-    public City findCityByCityId(Integer CityId) throws ReadException;
+    public City findCityByCityId(Long CityId) throws ReadException;
 
     /**
      * Finds a List of {@link City} objects containing data for all Cities in
