@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -39,11 +41,12 @@ public class User implements Serializable {
        /**
      * The date of the User creation.
      */
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
     /**
      * {@link EnumUserType} value for the user.
      */
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private EnumUserType userType;
     /**
      * Gets mail value for user.
@@ -136,7 +139,7 @@ public class User implements Serializable {
      */
     @Override
     public String toString() {
-        return "User{" + "mail=" + mail + ", password=" + password + ", userType=" + userType + '}';
+        return "User{" + "mail=" + mail + ", password=" + password + ", userType=" + userType + ", creationDate=" + creationDate+'}';
     }
     
 }

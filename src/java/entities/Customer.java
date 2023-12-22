@@ -1,12 +1,10 @@
 package entities;
 
-import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -19,11 +17,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "customer", schema = "g3CRUD")
 @NamedQueries({
-@NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
+@NamedQuery(name = "Customer.findAllCustomers", query = "SELECT c FROM Customer c"),
 @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.mail = :email"),
 @NamedQuery(name = "Customer.findWithTrips", query = "SELECT DISTINCT c FROM Customer c JOIN FETCH c.tripsInfo t"),
-@NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :customerAddress"),
-@NamedQuery(name = "Customer.findByNameContaining", query = "SELECT c FROM Customer c WHERE UPPER(c.name) LIKE UPPER(:partialName)")
+//@NamedQuery(name = "Customer.findAllOrderDate", query = "SELECT c FROM Customer c ORDER BY :creationDate;"),
+//@NamedQuery(name = "Customer.findOneWeek", query = "SELECT c FROM Customer c WHERE :customerId IN (SELECT customerId FROM tripInfo tf WHERE DATEDIFF(day, :initialDate, :lastDate) > 7) ")
 })
 @XmlRootElement
 public class Customer extends User {

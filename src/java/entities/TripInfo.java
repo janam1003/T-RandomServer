@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -83,7 +82,7 @@ public class TripInfo implements Serializable{
 	public void setTrip(Trip trip) {
 		this.trip = trip;
 	}
-	//@XmlTransient
+	@XmlTransient
 	public Customer getCustomer() {
 		return customer;
 	}

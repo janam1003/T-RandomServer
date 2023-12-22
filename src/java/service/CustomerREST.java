@@ -1,13 +1,10 @@
 package service;
 
-import ejb.CustomerManagerEJB;
 import ejbLocal.CustomerManagerEJBLocal;
 import entities.Customer;
-
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,95 +18,90 @@ public class CustomerREST {
     private static final Logger LOGGER = Logger.getLogger(CustomerREST.class.getName());
 
     @GET
-    @Path("/all")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCustomers() {
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Customer> getAllCustomers() {
+        List<Customer>customers = null;
         try {
-            List<Customer> customers = ejb.findAllCustomers();
+             customers = ejb.findAllCustomers();
             LOGGER.log(Level.INFO, "Retrieved all customers");
-            return Response.ok(customers).build();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
-            return Response.serverError().entity(e.getMessage()).build();
         }
+        return customers;
     }
 
     @GET
     @Path("/byMail/{mail}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomerByMail(@PathParam("mail") String mail) {
+     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Customer getCustomerByMail(@PathParam("mail") String mail) {
+        Customer customer = null;
         try {
-            Customer customer = ejb.findCustomerByMail(mail);
+            customer = ejb.findCustomerByMail(mail);
             LOGGER.log(Level.INFO, "Retrieved customer by mail: {0}", mail);
-            return Response.ok(customer).build();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
-            return Response.serverError().entity(e.getMessage()).build();
+            LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);      
         }
+        return customer;
     }
 
     @GET
     @Path("/withTrips")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomersWithTrips() {
+     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public List<Customer> getCustomersWithTrips() {
+        List<Customer>customers = null;
         try {
-            List<Customer> customers = ejb.findCustomersWithTrips();
-            return Response.ok(customers).build();
+            customers = ejb.findCustomersWithTrips();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with trips", e);
-            return Response.serverError().entity(e.getMessage()).build();
         }
+        return customers;
     }
 
     @GET
-    @Path("/byAddress/{customerAddress}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomersByAddress(@PathParam("customerAddress") String customerAddress) {
+    @Path("/CreationDate")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public List<Customer> getCustomersOrderByCreationDate() {
+        List<Customer> customers = null;
         try {
-            List<Customer> customers = ejb.findCustomersByAddress(customerAddress);
-            return Response.ok(customers).build();
+            customers = ejb.findAllOrderByCreationDate();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customers by address: " + customerAddress, e);
-            return Response.serverError().entity(e.getMessage()).build();
+            LOGGER.log(Level.SEVERE, "Error retrieving customers by address: ");
         }
+        return customers;
     }
 
     @GET
-    @Path("/byNameContaining/{partialName}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomersByNameContaining(@PathParam("partialName") String partialName) {
+    @Path("/MoreThanOneWeekTrips")
+     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public List<Customer> getCustomersOneWeekTrips() {
+        List<Customer>customers = null;
         try {
-            List<Customer> customers = ejb.findCustomersByNameContaining(partialName);
-            return Response.ok(customers).build();
+            customers = ejb.findOneWeekTrips();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customers by name containing: " + partialName, e);
-            return Response.serverError().entity(e.getMessage()).build();
+            LOGGER.log(Level.SEVERE, "Error retrieving customers with more than a week trips ");
         }
+        return customers;
     }
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response createCustomer(Customer customer) {
+    public void createCustomer(Customer customer) {
         try {
             ejb.createCustomer(customer);
             LOGGER.log(Level.INFO, "Created customer with id: {0}", customer.getMail());
-            return Response.ok().build();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error creating customer", e);
-            return Response.serverError().entity(e.getMessage()).build();
         }
     }
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response updateCustomer(Customer customer) {
+    public void updateCustomer(Customer customer) {
         try {
             ejb.updateCustomer(customer);
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
-            return Response.ok().build();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
-            return Response.serverError().entity(e.getMessage()).build();
         }
     }
 
@@ -121,15 +113,13 @@ public class CustomerREST {
      */
 
     @DELETE
-    @Path("/{id}")
-    public Response deleteCustomer(@PathParam("id") Long id) {
+    @Path("/Delete/{id}")
+    public void deleteCustomer(@PathParam("id") String id) {
         try {
             ejb.deleteCustomer(id);
             LOGGER.log(Level.INFO, "Deleted customer with id: {0}", id);
-            return Response.ok().build();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error deleting customer", e);
-            return Response.serverError().entity(e.getMessage()).build();
         }
     }
 }
