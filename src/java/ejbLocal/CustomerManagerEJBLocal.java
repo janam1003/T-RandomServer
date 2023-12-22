@@ -37,22 +37,21 @@ public interface CustomerManagerEJBLocal {
      * @return A list of customers with associated trips.
      */
     List<Customer> findCustomersWithTrips();
-
     /**
-     * Retrieves all customers with a specific address.
+     * Retrieves all customers ordered by they day they where created.
      *
-     * @param customerAddress The address to filter by.
-     * @return A list of customers with the specified address.
+     * @return A list of customers with customers ordered by they day they where created.
      */
-    List<Customer> findCustomersByAddress(String customerAddress);
-
+    
+    List<Customer> findAllOrderByCreationDate();
     /**
-     * Retrieves all customers whose name contains a specified partial name.
+     * Retrieves all customers with trips longer than one week.
      *
-     * @param partialName The partial name to search for.
-     * @return A list of customers with names containing the specified partial name.
+     * @return A list of customers trips longer than one week.
      */
-    List<Customer> findCustomersByNameContaining(String partialName);
+    
+    
+    List<Customer> findOneWeekTrips();
         /**
      * Creates a new customer.
      *
@@ -72,5 +71,5 @@ public interface CustomerManagerEJBLocal {
      *
      * @param customerId The ID of the customer to be deleted.
      */
-    void deleteCustomer(Long customerId);
+    void deleteCustomer(String customerId);
 }

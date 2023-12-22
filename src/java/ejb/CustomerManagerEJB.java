@@ -8,7 +8,6 @@ package ejb;
 import ejbLocal.CustomerManagerEJBLocal;
 import entities.Customer;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,7 +22,7 @@ import java.util.logging.Logger;
 @Stateless
 public class CustomerManagerEJB implements CustomerManagerEJBLocal{
 
-    @PersistenceContext
+    @PersistenceContext(unitName ="G3CRUDServerPU")
     private EntityManager entityManager;
 
     private static final Logger LOGGER = Logger.getLogger(CustomerManagerEJB.class.getName());
@@ -37,7 +36,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
     public List<Customer> findAllCustomers() {
         List<Customer> customers= null;
         try {
-             customers=entityManager.createNamedQuery("findAllCustomers", Customer.class).getResultList();
+             customers=entityManager.createNamedQuery("Customer.findAllCustomers", Customer.class).getResultList();
             
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
@@ -55,7 +54,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
     @Override
     public Customer findCustomerByMail(String mail) {
         try {
-            TypedQuery<Customer> query = entityManager.createNamedQuery("findCustomersByMail", Customer.class);
+            TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findByEmail", Customer.class);
             query.setParameter("mail", mail);
             return query.getSingleResult();
         } catch (Exception e) {
@@ -77,42 +76,6 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with trips", e);
             throw new RuntimeException("Error retrieving customers with trips", e);
-        }
-    }
-
-    /**
-     * Retrieves all customers with a specific address.
-     *
-     * @param customerAddress The address to filter by.
-     * @return A list of customers with the specified address.
-     */
-    @Override
-    public List<Customer> findCustomersByAddress(String customerAddress) {
-        try {
-            TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findByAddress", Customer.class);
-            query.setParameter("customerAddress", customerAddress);
-            return query.getResultList();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customers by address: " + customerAddress, e);
-            throw new RuntimeException("Error retrieving customers by address: " + customerAddress, e);
-        }
-    }
-
-    /**
-     * Retrieves all customers whose name contains a specified partial name.
-     *
-     * @param partialName The partial name to search for.
-     * @return A list of customers with names containing the specified partial name.
-     */
-    @Override
-    public List<Customer> findCustomersByNameContaining(String partialName) {
-        try {
-            TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findByNameContaining", Customer.class);
-            query.setParameter("partialName", "%" + partialName + "%");
-            return query.getResultList();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customers by name containing: " + partialName, e);
-            throw new RuntimeException("Error retrieving customers by name containing: " + partialName, e);
         }
     }
     /**
@@ -153,7 +116,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
      * @param customerId The ID of the customer to be deleted.
      */
     @Override
-    public void deleteCustomer(Long customerId) {
+    public void deleteCustomer(String customerId) {
         try {
             Customer customer = entityManager.find(Customer.class, customerId);
             if (customer != null) {
@@ -166,5 +129,31 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
             LOGGER.log(Level.SEVERE, "Error deleting customer", e);
             throw new RuntimeException("Error deleting customer", e);
         }
+    }
+
+    @Override
+    public List<Customer> findAllOrderByCreationDate() {
+       List<Customer> customers= null;
+        try {
+             customers=entityManager.createNamedQuery("Customer.findAllOrderDate", Customer.class).getResultList();
+            
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
+            throw new RuntimeException("Error retrieving all customers", e);
+        }
+        return customers;
+    }
+
+    @Override
+    public List<Customer> findOneWeekTrips() {
+   List<Customer> customers= null;
+        try {
+             customers=entityManager.createNamedQuery("Customer.findOneWeek" , Customer.class).getResultList();
+            
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
+            throw new RuntimeException("Error retrieving all customers", e);
+        }
+        return customers;
     }
 }
