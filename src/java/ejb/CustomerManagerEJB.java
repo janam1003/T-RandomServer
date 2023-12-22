@@ -20,9 +20,9 @@ import java.util.logging.Logger;
  * EJB for managing Customer entities.
  */
 @Stateless
-public class CustomerManagerEJB implements CustomerManagerEJBLocal{
+public class CustomerManagerEJB implements CustomerManagerEJBLocal {
 
-    @PersistenceContext(unitName ="G3CRUDServerPU")
+    @PersistenceContext
     private EntityManager entityManager;
 
     private static final Logger LOGGER = Logger.getLogger(CustomerManagerEJB.class.getName());
@@ -34,10 +34,9 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
      */
     @Override
     public List<Customer> findAllCustomers() {
-        List<Customer> customers= null;
+        List<Customer> customers = null;
         try {
-             customers=entityManager.createNamedQuery("Customer.findAllCustomers", Customer.class).getResultList();
-            
+            customers = entityManager.createNamedQuery("Customer.findAllCustomers", Customer.class).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
             throw new RuntimeException("Error retrieving all customers", e);
@@ -53,14 +52,14 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
      */
     @Override
     public Customer findCustomerByMail(String mail) {
+        Customer customer = null;
         try {
-            TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findByEmail", Customer.class);
-            query.setParameter("mail", mail);
-            return query.getSingleResult();
+            return entityManager.createNamedQuery("Customer.findByEmail", Customer.class).setParameter("mail", mail).getSingleResult();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
             throw new RuntimeException("Error retrieving customer by mail: " + mail, e);
         }
+        return customer;
     }
 
     /**
@@ -78,6 +77,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
             throw new RuntimeException("Error retrieving customers with trips", e);
         }
     }
+
     /**
      * Creates a new customer.
      *
@@ -133,10 +133,10 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
 
     @Override
     public List<Customer> findAllOrderByCreationDate() {
-       List<Customer> customers= null;
+        List<Customer> customers = null;
         try {
-             customers=entityManager.createNamedQuery("Customer.findAllOrderDate", Customer.class).getResultList();
-            
+            customers = entityManager.createNamedQuery("Customer.findAllOrderDate", Customer.class).getResultList();
+
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
             throw new RuntimeException("Error retrieving all customers", e);
@@ -146,10 +146,10 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal{
 
     @Override
     public List<Customer> findOneWeekTrips() {
-   List<Customer> customers= null;
+        List<Customer> customers = null;
         try {
-             customers=entityManager.createNamedQuery("Customer.findOneWeek" , Customer.class).getResultList();
-            
+            customers = entityManager.createNamedQuery("Customer.findOneWeek", Customer.class).getResultList();
+
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
             throw new RuntimeException("Error retrieving all customers", e);

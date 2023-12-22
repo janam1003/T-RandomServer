@@ -32,7 +32,7 @@ public class CityManagerEJB implements CityManagerEJBLocal {
     /**
      * Entity manager object.
      */
-    @PersistenceContext(unitName = "G3CRUDServerPU")
+    @PersistenceContext
     private EntityManager em;
 
     /**
