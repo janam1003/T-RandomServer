@@ -3,6 +3,7 @@ package ejbLocal;
 import entities.Customer;
 import entities.Trip;
 import entities.TripInfo;
+import entities.TripInfoId;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
@@ -23,7 +24,7 @@ public interface TripInfoManagerEJBLocal {
      * @return The {@link TripInfo} object containing tripInfo data
      * @throws ReadException If there is any Exception during processing.
      */
-    public TripInfo findTripInfoById(Integer id) throws ReadException;
+    public TripInfo findTripInfoById(TripInfoId tripInfoId) throws ReadException;
 
     /**
      * Finds all {@link TripInfo} objects associated with a given Customer.

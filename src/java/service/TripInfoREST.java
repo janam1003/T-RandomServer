@@ -31,7 +31,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import ejb.TripManagerEJB;
+import entities.TripInfoId;
 import java.util.Date;
+import java.util.HashSet;
 
 /**
  * RESTful web service class exposing CRUD operations for {@link TripInfo}
@@ -111,11 +113,12 @@ public class TripInfoREST {
      * @param id The id for the object to be deleted.
      */
     @DELETE
-    @Path("{id}")
-    public void delete(@PathParam("id") Integer id) {
+    @Path("{customerId}/{tripId}")
+    public void delete(@PathParam("customerId") String customerId, @PathParam("tripId") Integer tripId) {
+        TripInfoId tripInfoId = new TripInfoId(tripId, customerId);
         try {
-            LOGGER.log(Level.INFO, "TripInfoRESTful service: delete TripInfo by id={0}.", id);
-            TripInfo tripInfo = tripInfoEjb.findTripInfoById(id);
+            LOGGER.log(Level.INFO, "TripInfoRESTful service: delete TripInfo by id={0}.", tripInfoId);
+            TripInfo tripInfo = tripInfoEjb.findTripInfoById(tripInfoId);
             tripInfoEjb.deleteTripInfo(tripInfo);
         } catch (ReadException | DeleteException ex) {
             LOGGER.log(Level.SEVERE,
@@ -133,13 +136,14 @@ public class TripInfoREST {
      * @return The TripInfo object containing data.
      */
     @GET
-    @Path("{id}")
+    @Path("{customerId}/{tripId}")
     @Produces({"application/xml"})
-    public TripInfo find(@PathParam("id") Integer id) {
+    public TripInfo find(@PathParam("customerId") String customerId, @PathParam("tripId") Integer tripId) {
         TripInfo tripInfo = null;
+        TripInfoId tripInfoId = new TripInfoId(tripId, customerId);
         try {
-            LOGGER.log(Level.INFO, "TripInfoRESTful service: find TripInfo by id={0}.", id);
-            tripInfo = tripInfoEjb.findTripInfoById(id);
+            LOGGER.log(Level.INFO, "TripInfoRESTful service: find TripInfo by id={0}.", tripInfoId);
+            tripInfo = tripInfoEjb.findTripInfoById(tripInfoId);
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE,
                     "TripInfoRESTful service: Exception reading tripInfo by id, {0}",

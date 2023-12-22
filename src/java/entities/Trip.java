@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static java.util.logging.Level.ALL;
+import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.MERGE;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

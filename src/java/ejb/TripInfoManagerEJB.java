@@ -4,6 +4,7 @@ import ejbLocal.TripInfoManagerEJBLocal;
 import entities.Customer;
 import entities.Trip;
 import entities.TripInfo;
+import entities.TripInfoId;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
@@ -41,11 +42,11 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
      * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public TripInfo findTripInfoById(Integer id) throws ReadException {
+    public TripInfo findTripInfoById(TripInfoId tripInfoId) throws ReadException {
         TripInfo tripInfo = null;
         try {
             LOGGER.info("TripInfoManager: Finding tripInfo by id.");
-            tripInfo = em.find(TripInfo.class, id);
+            tripInfo = em.find(TripInfo.class, tripInfoId);
             if (tripInfo != null) {
                 LOGGER.log(Level.INFO, "TripInfoManager: TripInfo found {0}", tripInfo.getTripInfoId());
             }
