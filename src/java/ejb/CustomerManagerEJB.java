@@ -7,6 +7,10 @@ package ejb;
 
 import ejbLocal.CustomerManagerEJBLocal;
 import entities.Customer;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,15 +35,16 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * Retrieves all customers.
      *
      * @return A list of all customers.
+     * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public List<Customer> findAllCustomers() {
+    public List<Customer> findAllCustomers() throws ReadException{
         List<Customer> customers = null;
         try {
             customers = entityManager.createNamedQuery("Customer.findAllCustomers", Customer.class).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
-            throw new RuntimeException("Error retrieving all customers", e);
+            throw new ReadException(e.getMessage());
         }
         return customers;
     }
@@ -49,15 +54,16 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      *
      * @param mail The email address of the customer.
      * @return The customer with the specified email address.
+     * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public Customer findCustomerByMail(String mail) {
+    public Customer findCustomerByMail(String mail) throws ReadException{
         Customer customer = null;
         try {
-            return entityManager.createNamedQuery("Customer.findByEmail", Customer.class).setParameter("mail", mail).getSingleResult();
+            customer = entityManager.createNamedQuery("Customer.findByEmail", Customer.class).setParameter("email", mail).getSingleResult();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
-            throw new RuntimeException("Error retrieving customer by mail: " + mail, e);
+             throw new ReadException(e.getMessage());
         }
         return customer;
     }
@@ -66,31 +72,71 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * Retrieves all customers with associated trips.
      *
      * @return A list of customers with associated trips.
+     * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public List<Customer> findCustomersWithTrips() {
+    public List<Customer> findCustomersWithTrips() throws ReadException {
         try {
             TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findWithTrips", Customer.class);
             return query.getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with trips", e);
-            throw new RuntimeException("Error retrieving customers with trips", e);
+             throw new ReadException(e.getMessage());
         }
+    }
+    
+    /**
+     * Retrieves all customers order by CreationDate.
+     *
+     * @return A list of customers order by CreationDate.
+     * @throws ReadException If there is any Exception during processing.
+     */
+    @Override
+    public List<Customer> findAllOrderByCreationDate() throws ReadException{
+        List<Customer> customers = null;
+        try {
+            customers = entityManager.createNamedQuery("Customer.findAllOrderDate", Customer.class).getResultList();
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
+             throw new ReadException(e.getMessage());
+        }
+        return customers;
+    }
+    
+    /**
+     * Retrieves all customers order by CreationDate.
+     *
+     * @return A list of customers order by CreationDate.
+     * @throws ReadException If there is any Exception during processing.
+     */
+    @Override
+    public List<Customer> findOneWeekTrips() throws ReadException {
+        List<Customer> customers = null;
+        try {
+            customers = entityManager.createNamedQuery("Customer.findOneWeek", Customer.class).getResultList();
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
+             throw new ReadException(e.getMessage());
+        }
+        return customers;
     }
 
     /**
      * Creates a new customer.
      *
      * @param customer The customer to be created.
+     * @throws CreateException If there is any Exception during processing.
      */
     @Override
-    public void createCustomer(Customer customer) {
+    public void createCustomer(Customer customer) throws CreateException {
         try {
             entityManager.persist(customer);
             LOGGER.log(Level.INFO, "Created customer with email: {0}", customer.getMail());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error creating customer", e);
-            throw new RuntimeException("Error creating customer", e);
+             throw new CreateException(e.getMessage());
         }
     }
 
@@ -98,15 +144,16 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * Updates an existing customer.
      *
      * @param customer The customer to be updated.
+     * @throws UpdateException If there is any Exception during processing.
      */
     @Override
-    public void updateCustomer(Customer customer) {
+    public void updateCustomer(Customer customer) throws UpdateException {
         try {
             entityManager.merge(customer);
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
-            throw new RuntimeException("Error updating customer", e);
+             throw new UpdateException(e.getMessage());
         }
     }
 
@@ -114,9 +161,10 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * Deletes a customer by their ID.
      *
      * @param customerId The ID of the customer to be deleted.
+     * @throws DeleteException If there is any Exception during processing.
      */
     @Override
-    public void deleteCustomer(String customerId) {
+    public void deleteCustomer(String customerId) throws DeleteException {
         try {
             Customer customer = entityManager.find(Customer.class, customerId);
             if (customer != null) {
@@ -127,33 +175,9 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error deleting customer", e);
-            throw new RuntimeException("Error deleting customer", e);
+             throw new DeleteException(e.getMessage());
         }
     }
 
-    @Override
-    public List<Customer> findAllOrderByCreationDate() {
-        List<Customer> customers = null;
-        try {
-            customers = entityManager.createNamedQuery("Customer.findAllOrderDate", Customer.class).getResultList();
-
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
-            throw new RuntimeException("Error retrieving all customers", e);
-        }
-        return customers;
-    }
-
-    @Override
-    public List<Customer> findOneWeekTrips() {
-        List<Customer> customers = null;
-        try {
-            customers = entityManager.createNamedQuery("Customer.findOneWeek", Customer.class).getResultList();
-
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
-            throw new RuntimeException("Error retrieving all customers", e);
-        }
-        return customers;
-    }
+    
 }

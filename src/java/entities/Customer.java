@@ -19,9 +19,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
 @NamedQuery(name = "Customer.findAllCustomers", query = "SELECT c FROM Customer c"),
 @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.mail = :email"),
-@NamedQuery(name = "Customer.findWithTrips", query = "SELECT DISTINCT c FROM Customer c JOIN FETCH c.tripsInfo t"),
-//@NamedQuery(name = "Customer.findAllOrderDate", query = "SELECT c FROM Customer c ORDER BY :creationDate;"),
-//@NamedQuery(name = "Customer.findOneWeek", query = "SELECT c FROM Customer c WHERE :customerId IN (SELECT customerId FROM tripInfo tf WHERE DATEDIFF(day, :initialDate, :lastDate) > 7) ")
+@NamedQuery(name = "Customer.findWithTrips", query = "SELECT DISTINCT c FROM Customer c WHERE c IN (SELECT t.customer FROM TripInfo t)"),
+@NamedQuery(name = "Customer.findAllOrderDate", query = "SELECT c FROM Customer c ORDER BY c.creationDate"),
+@NamedQuery(name = "Customer.findOneWeek", query = "SELECT c FROM Customer c WHERE customerId IN (SELECT tf.customer FROM TripInfo tf WHERE EXTRACT(day FROM (tf.lastDate - tf.initialDate)) > 7) ")
 })
 @XmlRootElement
 public class Customer extends User {
