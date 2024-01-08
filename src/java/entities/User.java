@@ -6,7 +6,7 @@
 package entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -42,7 +42,7 @@ public class User implements Serializable {
      * The date of the User creation.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate creationDate;
+    private Date creationDate;
     /**
      * {@link EnumUserType} value for the user.
      */
@@ -80,14 +80,14 @@ public class User implements Serializable {
      * Gets creationDate value for user.
      * @return The creationDate value.
      */
-    public LocalDate getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
     /**
      * Sets creationDate value for user.
      * @param creationDate The login value.
      */
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
     /**

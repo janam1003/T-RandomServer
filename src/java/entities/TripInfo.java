@@ -1,7 +1,7 @@
 package entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -46,10 +46,10 @@ public class TripInfo implements Serializable{
 	Customer customer;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	LocalDate initialDate;
+	Date initialDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	LocalDate lastDate;
+	Date lastDate;
 
 	@Override
 	public int hashCode() {
@@ -98,16 +98,16 @@ public class TripInfo implements Serializable{
         this.tripInfoId = tripInfoId;
     }
         
-	public LocalDate getInitialDate() {
+	public Date getInitialDate() {
 		return initialDate;
 	}
-	public void setInitialDate(LocalDate initialDate) {
+	public void setInitialDate(Date initialDate) {
 		this.initialDate = initialDate;
 	}
-	public LocalDate getLastDate() {
+	public Date getLastDate() {
 		return lastDate;
 	}
-	public void setLastDate(LocalDate lastDate) {
+	public void setLastDate(Date lastDate) {
 		this.lastDate = lastDate;
 	}
 	
