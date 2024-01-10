@@ -1,7 +1,9 @@
 package entities;
 
 import java.util.List;
+import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -51,7 +53,7 @@ public class Customer extends User {
     /**
      * A list of TripInfo objects associated with this customer.
      */
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade=REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TripInfo> tripsInfo;
 
     /**

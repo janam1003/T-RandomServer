@@ -6,9 +6,11 @@ import java.util.List;
 import static java.util.logging.Level.ALL;
 import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,12 +44,12 @@ public class Trip implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 
-	@OneToMany(mappedBy="trip")
+	@OneToMany(mappedBy="trip", cascade=REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<TripInfo> tripInfo;
 
-	//TODO: how to add cities to the trip? new method? ¿esta bien?
 	@ManyToMany(fetch=EAGER)
-	@JoinTable(schema="g3CRUD",name="trip_cities")
+	@JoinTable(schema="g3CRUD",name="trip_cities", joinColumns = @JoinColumn(name = "trip_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "city_id", referencedColumnName = "cityId"))
 	private List<City> cities;
 
 	@Enumerated(EnumType.STRING)
