@@ -3,36 +3,41 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Embeddable;
+
 /**
  * Entity for TripInfoId, which is the id for TripInfo
+ *
  * @author Iñigo
  */
 @Embeddable
-public class TripInfoId implements Serializable{
-	private Integer tripId;
-	private String customerId;
-	
-        public TripInfoId (Integer tripId, String customerId) {
-            this.customerId = customerId;
-            this.tripId = tripId;
-        }
-        
-        public TripInfoId() {
-        }
+public class TripInfoId implements Serializable {
 
-	public Integer getTripId() {
-		return tripId;
-	}
-	public void setTripId(Integer tripId) {
-		this.tripId = tripId;
-	}
+    private Integer tripId;
+    private String customerId;
 
-	public String getCustomerId() {
-		return customerId;
-	}
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
+    public TripInfoId(Integer tripId, String customerId) {
+        this.customerId = customerId;
+        this.tripId = tripId;
+    }
+
+    public TripInfoId() {
+    }
+
+    public Integer getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Integer tripId) {
+        this.tripId = tripId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
 
     @Override
     public int hashCode() {
@@ -62,5 +67,5 @@ public class TripInfoId implements Serializable{
         }
         return true;
     }
-        
+
 }

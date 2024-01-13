@@ -1,9 +1,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * It is an City entitywhich is Serializable. Containing attributes CityId,
@@ -49,7 +49,6 @@ public class City implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="cityId")
     private Long cityId;
 
     /**
@@ -78,7 +77,7 @@ public class City implements Serializable {
      * Relational field for cities trips.
      */
     @ManyToMany(mappedBy = "cities", fetch = FetchType.EAGER)
-    private Set<Trip> trips;
+    private List<Trip> trips;
 
     /**
      * Empty Constructor.
@@ -170,14 +169,15 @@ public class City implements Serializable {
      *
      * @return trips
      */
-    public Set<Trip> getTrip() {
+    @XmlTransient
+    public List<Trip> getTrip() {
         return trips;
     }
 
     /**
      * @param trips the trips to set
      */
-    public void setTrip(Set<Trip> trips) {
+    public void setTrip(List<Trip> trips) {
         this.trips = trips;
     }
 

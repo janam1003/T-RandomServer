@@ -23,10 +23,12 @@ import javax.ws.rs.Produces;
 
 /**
  * RESTful web service class exposing CRUD operations for {@link Trip} entities.
+ *
  * @author Iñigo
  */
 @Path("trip")
 public class TripREST {
+
     /**
      * Logger for class methods.
      */
@@ -39,7 +41,9 @@ public class TripREST {
     private TripManagerEJBLocal ejb;
 
     /**
-     * RESTful POST method for creating {@link Trip} objects from XML representation.
+     * RESTful POST method for creating {@link Trip} objects from XML
+     * representation.
+     *
      * @param trip The object containing trip data.
      */
     @POST
@@ -57,7 +61,9 @@ public class TripREST {
     }
 
     /**
-     * RESTful PUT method for updating {@link Trip} objects from XML representation.
+     * RESTful PUT method for updating {@link Trip} objects from XML
+     * representation.
+     *
      * @param trip The object containing trip data.
      */
     @PUT
@@ -76,6 +82,7 @@ public class TripREST {
 
     /**
      * RESTful DELETE method for deleting {@link Trip} objects from id.
+     *
      * @param id The id for the object to be deleted.
      */
     @DELETE
@@ -94,7 +101,9 @@ public class TripREST {
     }
 
     /**
-     * RESTful GET method for reading {@link Trip} objects through an XML representation.
+     * RESTful GET method for reading {@link Trip} objects through an XML
+     * representation.
+     *
      * @param id The id for the object to be read.
      * @return The Trip object containing data.
      */
@@ -117,6 +126,7 @@ public class TripREST {
 
     /**
      * RESTful GET method for reading all {@link Trip} objects.
+     *
      * @return A List of {@link Trip} objects.
      */
     @GET
@@ -136,7 +146,9 @@ public class TripREST {
     }
 
     /**
-     * RESTful GET method for reading all {@link Trip} objects with a certain tripType value.
+     * RESTful GET method for reading all {@link Trip} objects with a certain
+     * tripType value.
+     *
      * @param tripType The tripType value for the trips to be found.
      * @return A List of {@link Trip} objects.
      */
@@ -157,4 +169,3 @@ public class TripREST {
         return tripList;
     }
 }
-

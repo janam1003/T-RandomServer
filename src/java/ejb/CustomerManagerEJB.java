@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb;
 
 import ejbLocal.CustomerManagerEJBLocal;
@@ -11,7 +6,6 @@ import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,7 +32,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public List<Customer> findAllCustomers() throws ReadException{
+    public List<Customer> findAllCustomers() throws ReadException {
         List<Customer> customers = null;
         try {
             customers = entityManager.createNamedQuery("Customer.findAllCustomers", Customer.class).getResultList();
@@ -57,13 +51,13 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public Customer findCustomerByMail(String mail) throws ReadException{
+    public Customer findCustomerByMail(String mail) throws ReadException {
         Customer customer = null;
         try {
             customer = entityManager.createNamedQuery("Customer.findByEmail", Customer.class).setParameter("email", mail).getSingleResult();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
-             throw new ReadException(e.getMessage());
+            throw new ReadException(e.getMessage());
         }
         return customer;
     }
@@ -81,10 +75,10 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
             return query.getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with trips", e);
-             throw new ReadException(e.getMessage());
+            throw new ReadException(e.getMessage());
         }
     }
-    
+
     /**
      * Retrieves all customers order by CreationDate.
      *
@@ -92,18 +86,18 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * @throws ReadException If there is any Exception during processing.
      */
     @Override
-    public List<Customer> findAllOrderByCreationDate() throws ReadException{
+    public List<Customer> findAllOrderByCreationDate() throws ReadException {
         List<Customer> customers = null;
         try {
             customers = entityManager.createNamedQuery("Customer.findAllOrderDate", Customer.class).getResultList();
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
-             throw new ReadException(e.getMessage());
+            throw new ReadException(e.getMessage());
         }
         return customers;
     }
-    
+
     /**
      * Retrieves all customers order by CreationDate.
      *
@@ -118,7 +112,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
-             throw new ReadException(e.getMessage());
+            throw new ReadException(e.getMessage());
         }
         return customers;
     }
@@ -136,7 +130,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
             LOGGER.log(Level.INFO, "Created customer with email: {0}", customer.getMail());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error creating customer", e);
-             throw new CreateException(e.getMessage());
+            throw new CreateException(e.getMessage());
         }
     }
 
@@ -153,7 +147,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
-             throw new UpdateException(e.getMessage());
+            throw new UpdateException(e.getMessage());
         }
     }
 
@@ -175,9 +169,8 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error deleting customer", e);
-             throw new DeleteException(e.getMessage());
+            throw new DeleteException(e.getMessage());
         }
     }
 
-    
 }

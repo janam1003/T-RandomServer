@@ -20,9 +20,9 @@ public class CustomerREST {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getAllCustomers() {
-        List<Customer>customers = null;
+        List<Customer> customers = null;
         try {
-             customers = ejb.findAllCustomers();
+            customers = ejb.findAllCustomers();
             LOGGER.log(Level.INFO, "Retrieved all customers");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
@@ -32,23 +32,23 @@ public class CustomerREST {
 
     @GET
     @Path("/byMail/{mail}")
-     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Customer getCustomerByMail(@PathParam("mail") String mail) {
         Customer customer = null;
         try {
             customer = ejb.findCustomerByMail(mail);
             LOGGER.log(Level.INFO, "Retrieved customer by mail: {0}", mail);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);      
+            LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
         }
         return customer;
     }
 
     @GET
     @Path("/withTrips")
-     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Customer> getCustomersWithTrips() {
-        List<Customer>customers = null;
+        List<Customer> customers = null;
         try {
             customers = ejb.findCustomersWithTrips();
         } catch (Exception e) {
@@ -72,9 +72,9 @@ public class CustomerREST {
 
     @GET
     @Path("/MoreThanOneWeekTrips")
-     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Customer> getCustomersOneWeekTrips() {
-        List<Customer>customers = null;
+        List<Customer> customers = null;
         try {
             customers = ejb.findOneWeekTrips();
         } catch (Exception e) {
@@ -111,7 +111,6 @@ public class CustomerREST {
      * @param id
      * @return
      */
-
     @DELETE
     @Path("/Delete/{id}")
     public void deleteCustomer(@PathParam("id") String id) {

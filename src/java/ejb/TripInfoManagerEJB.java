@@ -13,22 +13,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  * EJB class for managing TripInfo entity CRUD operations.
+ *
  * @author Iñigo
  */
 @Stateless
 public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
+
     /**
      * Logger for the class.
      */
     private static final Logger LOGGER = Logger.getLogger("javafxserverside");
-    
+
     /**
      * Entity manager object.
      */
@@ -37,6 +38,7 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
 
     /**
      * Finds a {@link TripInfo} by its Id.
+     *
      * @param id The Id for the TripInfo to be found.
      * @return The {@link TripInfo} object containing tripInfo data
      * @throws ReadException If there is any Exception during processing.
@@ -59,6 +61,7 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
 
     /**
      * Finds all {@link TripInfo} objects associated with a given Customer.
+     *
      * @param customer The Customer for which to retrieve TripInfo objects.
      * @return A List of {@link TripInfo} objects.
      * @throws ReadException If there is any Exception during processing.
@@ -80,6 +83,7 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
 
     /**
      * Finds all {@link TripInfo} objects associated with a given Trip.
+     *
      * @param trip The Trip for which to retrieve TripInfo objects.
      * @return A List of {@link TripInfo} objects.
      * @throws ReadException If there is any Exception during processing.
@@ -100,7 +104,9 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
     }
 
     /**
-     * Updates the information of a TripInfo in the underlying application storage.
+     * Updates the information of a TripInfo in the underlying application
+     * storage.
+     *
      * @param tripInfo The {@link TripInfo} object containing the updated data.
      * @throws UpdateException If there is any Exception during processing.
      */
@@ -119,6 +125,7 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
 
     /**
      * Deletes a TripInfo from the underlying application storage.
+     *
      * @param tripInfo The {@link TripInfo} object to be deleted.
      * @throws DeleteException If there is any Exception during processing.
      */
@@ -136,7 +143,9 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
     }
 
     /**
-     * Creates a new TripInfo and stores it in the underlying application storage.
+     * Creates a new TripInfo and stores it in the underlying application
+     * storage.
+     *
      * @param tripInfo The {@link TripInfo} object containing the new data.
      * @throws CreateException If there is any Exception during processing.
      */
@@ -153,8 +162,11 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
     }
 
     /**
-     * Finds all active {@link TripInfo} objects associated with a given Customer.
-     * @param customer The Customer for which to retrieve active TripInfo objects.
+     * Finds all active {@link TripInfo} objects associated with a given
+     * Customer.
+     *
+     * @param customer The Customer for which to retrieve active TripInfo
+     * objects.
      * @return A List of active {@link TripInfo} objects.
      * @throws ReadException If there is any Exception during processing.
      */
@@ -163,7 +175,7 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
         List<TripInfo> tripInfos = null;
         try {
             LOGGER.info("TripInfoManager: Finding active tripInfos by customer.");
-			Date date = new Date();
+            Date date = new Date();
             tripInfos = em.createNamedQuery("findActiveTripInfoByCustomer")
                     .setParameter("customer", customer)
                     .setParameter("date", date)
@@ -176,8 +188,11 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
     }
 
     /**
-     * Finds all inactive {@link TripInfo} objects associated with a given Customer.
-     * @param customer The Customer for which to retrieve inactive TripInfo objects.
+     * Finds all inactive {@link TripInfo} objects associated with a given
+     * Customer.
+     *
+     * @param customer The Customer for which to retrieve inactive TripInfo
+     * objects.
      * @return A List of inactive {@link TripInfo} objects.
      * @throws ReadException If there is any Exception during processing.
      */
@@ -186,8 +201,8 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
         List<TripInfo> tripInfos = null;
         try {
             LOGGER.info("TripInfoManager: Finding inactive tripInfos by customer.");
-			Date date = new Date();
-			tripInfos = em.createNamedQuery("findInactiveTripInfoByCustomer")
+            Date date = new Date();
+            tripInfos = em.createNamedQuery("findInactiveTripInfoByCustomer")
                     .setParameter("customer", customer)
                     .setParameter("date", date)
                     .getResultList();

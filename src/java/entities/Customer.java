@@ -12,18 +12,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Represents a Customer entity, extending the User class and implementing Serializable.
- * This class is mapped to the "customer" table in the "dindb" schema.
- * The primary key is the email address, and it is used as a foreign key in the "tripsInfo" relationship.
+ * Represents a Customer entity, extending the User class and implementing
+ * Serializable. This class is mapped to the "customer" table in the "dindb"
+ * schema. The primary key is the email address, and it is used as a foreign key
+ * in the "tripsInfo" relationship.
  */
 @Entity
 @Table(name = "customer", schema = "g3CRUD")
 @NamedQueries({
-@NamedQuery(name = "Customer.findAllCustomers", query = "SELECT c FROM Customer c"),
-@NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.mail = :email"),
-@NamedQuery(name = "Customer.findWithTrips", query = "SELECT DISTINCT c FROM Customer c WHERE c IN (SELECT t.customer FROM TripInfo t)"),
-@NamedQuery(name = "Customer.findAllOrderDate", query = "SELECT c FROM Customer c ORDER BY c.creationDate"),
-@NamedQuery(name = "Customer.findOneWeek", query = "SELECT c FROM Customer c WHERE customerId IN (SELECT tf.customer FROM TripInfo tf WHERE EXTRACT(day FROM (tf.lastDate - tf.initialDate)) > 7) ")
+    @NamedQuery(name = "Customer.findAllCustomers", query = "SELECT c FROM Customer c")
+    ,
+    @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.mail = :email")
+    ,
+    @NamedQuery(name = "Customer.findWithTrips", query = "SELECT DISTINCT c FROM Customer c WHERE c IN (SELECT t.customer FROM TripInfo t)")
+    ,
+    @NamedQuery(name = "Customer.findAllOrderDate", query = "SELECT c FROM Customer c ORDER BY c.creationDate")
+    ,
+    @NamedQuery(name = "Customer.findOneWeek", query = "SELECT c FROM Customer c WHERE customerId IN (SELECT tf.customer FROM TripInfo tf WHERE EXTRACT(day FROM (tf.lastDate - tf.initialDate)) > 7) ")
 })
 @XmlRootElement
 public class Customer extends User {
@@ -53,7 +58,7 @@ public class Customer extends User {
     /**
      * A list of TripInfo objects associated with this customer.
      */
-    @OneToMany(mappedBy = "customer", cascade=REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TripInfo> tripsInfo;
 
     /**
@@ -147,7 +152,8 @@ public class Customer extends User {
     /**
      * Sets the list of TripInfo objects associated with this customer.
      *
-     * @param tripsInfo The new list of TripInfo objects associated with this customer.
+     * @param tripsInfo The new list of TripInfo objects associated with this
+     * customer.
      */
     public void setTripsInfo(List<TripInfo> tripsInfo) {
         this.tripsInfo = tripsInfo;
@@ -184,16 +190,14 @@ public class Customer extends User {
         return !((this.getMail() == null) ? (other.getMail() != null) : !this.getMail().equals(other.getMail()));
     }
 
-    @Override
-    public String toString() {
-        return super.toString()+"Customer{" + "name=" + name + ", zip=" + zip + ", address=" + address + ", phone=" + phone + ", tripsInfo=" + tripsInfo + '}';
-    }
-
     /**
      * Generates a string representation of this customer.
      *
      * @return A string representation of this customer.
      */
+    @Override
+    public String toString() {
+        return super.toString() + "Customer{" + "name=" + name + ", zip=" + zip + ", address=" + address + ", phone=" + phone + ", tripsInfo=" + tripsInfo + '}';
+    }
 
 }
-

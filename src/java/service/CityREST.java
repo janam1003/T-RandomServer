@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -33,9 +35,11 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Janam
  */
-@Stateless
 @Path("city")
 public class CityREST {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @EJB
     private CityManagerEJBLocal cityEJB;
@@ -56,13 +60,13 @@ public class CityREST {
 
         try {
 
-            LOGGER.log(Level.INFO, "Creating a City");
+            LOGGER.log(Level.INFO, "CityRESTful service: create {0}.", entity);
 
             cityEJB.createCity(entity);
 
         } catch (CreateException ex) {
 
-            LOGGER.severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE, "CityRESTful service: Exception creating city, {0}", ex.getMessage());
 
             throw new InternalServerErrorException(ex.getMessage());
 
@@ -82,13 +86,13 @@ public class CityREST {
 
         try {
 
-            LOGGER.log(Level.INFO, "updating a City");
+            LOGGER.log(Level.INFO, "CityRESTful service: update {0}.", entity);
 
             cityEJB.updateCity(entity);
 
         } catch (UpdateException ex) {
 
-            LOGGER.severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE, "CityRESTful service: Exception updating city, {0}", ex.getMessage());
 
             throw new InternalServerErrorException(ex.getMessage());
 
@@ -104,17 +108,45 @@ public class CityREST {
      */
     @DELETE
     @Path("{cityId}")
+    @Transactional
+    //@TransactionAttribute(REQUIRED)
     public void deleteCity(@PathParam("cityId") Long cityId) {
 
         try {
 
-            LOGGER.log(Level.INFO, "Deleting City {0}", cityId);
+            LOGGER.log(Level.INFO, "CityRESTful service: delete city by cityId={0}.", cityId);
 
-            cityEJB.deleteCity(cityEJB.findCityByCityId(cityId));
+            // Fetch the managed City entity
+            City cityToDelete = cityEJB.findCityByCityId(cityId);
+
+            // Check if the entity is not null
+            if (cityToDelete != null) {
+
+                // Check if the entity is managed (attached)
+                if (em.contains(cityToDelete)) {
+
+                    // Delete the City
+                    cityEJB.deleteCity(cityToDelete);
+
+                } else {
+
+                    // If not managed, merge it to attach it to the persistence context
+                    City managedCity = em.merge(cityToDelete);
+
+                    // Delete the City
+                    cityEJB.deleteCity(managedCity);
+                }
+
+            } else {
+
+                // Handle the case where the entity is null (log a warning, throw an exception, etc.)
+                LOGGER.log(Level.WARNING, "CityRESTful service: Trying to delete a null city with id {0}.", cityId);
+
+            }
 
         } catch (ReadException | DeleteException ex) {
 
-            LOGGER.severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE, "CityRESTful service: Exception deleting city by cityId, {0}", ex.getMessage());
 
             throw new InternalServerErrorException(ex.getMessage());
 
@@ -138,13 +170,13 @@ public class CityREST {
 
         try {
 
-            LOGGER.log(Level.INFO, "getting city by cityId");
+            LOGGER.log(Level.INFO, "CityRESTful service: find City by cityId={0}.", cityId);
 
             city = cityEJB.findCityByCityId(cityId);
 
         } catch (ReadException ex) {
 
-            LOGGER.severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE, "CityRESTful service: Exception reading city by cityId, {0}", ex.getMessage());
 
             throw new InternalServerErrorException(ex.getMessage());
 
@@ -168,13 +200,13 @@ public class CityREST {
 
         try {
 
-            LOGGER.log(Level.INFO, "getting all city");
+            LOGGER.log(Level.INFO, "CityRESTful service: find all City.");
 
             cities = cityEJB.findAllCities();
 
         } catch (ReadException ex) {
 
-            LOGGER.severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE, "CityRESTful service: Exception reading all City, {0}", ex.getMessage());
 
             throw new InternalServerErrorException(ex.getMessage());
 
@@ -201,13 +233,13 @@ public class CityREST {
 
         try {
 
-            LOGGER.log(Level.INFO, "getting city by country");
+            LOGGER.log(Level.INFO, "CityRESTful service: find all City by country={0}.", country);
 
             cities = cityEJB.findAllCityByCountry(country);
 
         } catch (ReadException ex) {
 
-            LOGGER.severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE, "CityRESTful service: Exception reading City by country, {0}", ex.getMessage());
 
             throw new InternalServerErrorException(ex.getMessage());
 
@@ -235,13 +267,13 @@ public class CityREST {
 
         try {
 
-            LOGGER.log(Level.INFO, "getting city by populationType");
+            LOGGER.log(Level.INFO, "CityRESTful service: find all City by populationType={0}.", populationType);
 
             cities = cityEJB.findAllCitiesBypopulationType(populationType);
 
         } catch (ReadException ex) {
 
-            LOGGER.severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE, "CityRESTful service: Exception reading City by populationType, {0}", ex.getMessage());
 
             throw new InternalServerErrorException(ex.getMessage());
 

@@ -1,7 +1,9 @@
 package exception;
 
 /**
- * Represents an exception that occurs when there is an error during a read query in the application
+ * Represents an exception that occurs when there is an error during a read
+ * query in the application
+ *
  * @author Iñigo
  */
 public class ReadException extends Exception {
@@ -13,7 +15,9 @@ public class ReadException extends Exception {
     }
 
     /**
-     * Constructs an instance of ReadException with the specified detailed error message.
+     * Constructs an instance of ReadException with the specified detailed error
+     * message.
+     *
      * @param msg the detailed error message.
      */
     public ReadException(String msg) {

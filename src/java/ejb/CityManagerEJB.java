@@ -3,6 +3,7 @@ package ejb;
 import ejbLocal.CityManagerEJBLocal;
 import entities.City;
 import entities.PopulationType;
+import entities.Trip;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
@@ -103,7 +104,19 @@ public class CityManagerEJB implements CityManagerEJBLocal {
 
         try {
 
-            em.remove(em.merge(city));
+            // Detach the City from associated Trip entities
+            List<Trip> trips = city.getTrip();
+
+            for (Trip trip : trips) {
+
+                trip.getCities().remove(city);
+            }
+
+            // Update the City to remove associations
+            em.merge(city);
+
+            // Now delete the city
+            em.remove(city);
 
             LOGGER.info("CityManager: City deleted.");
 
@@ -113,6 +126,7 @@ public class CityManagerEJB implements CityManagerEJBLocal {
 
             throw new DeleteException(e.getMessage());
         }
+
     }
 
     /**

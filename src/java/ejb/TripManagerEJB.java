@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  * EJB class for managing Trip entity CRUD operations.
+ *
  * @author Iñigo
  */
 @Stateless
@@ -34,7 +35,7 @@ public class TripManagerEJB implements TripManagerEJBLocal {
 
     /**
      * Finds a {@link Trip} by its id.
-     * 
+     *
      * @param id The id for the trip to be found.
      * @return The {@link Trip} object containing trip data.
      * @throws ReadException If there is any Exception during processing.
@@ -55,10 +56,10 @@ public class TripManagerEJB implements TripManagerEJBLocal {
         return trip;
     }
 
-	/**
+    /**
      * Finds a List of {@link Trip} objects containing data for all trips in the
      * application data storage.
-     * 
+     *
      * @return A List of {@link Trip} objects.
      * @throws ReadException If there is any Exception during processing.
      */
@@ -78,7 +79,7 @@ public class TripManagerEJB implements TripManagerEJBLocal {
     /**
      * Finds a List of {@link Trip} objects containing data for all trips with a
      * certain tripType value.
-     * 
+     *
      * @param tripType The tripType value for the trips to be found.
      * @return A List of {@link Trip} objects.
      * @throws ReadException If there is any Exception during processing.
@@ -98,9 +99,9 @@ public class TripManagerEJB implements TripManagerEJBLocal {
         return trips;
     }
 
-	/**
+    /**
      * Creates a Trip and stores it in the underlying application storage.
-     * 
+     *
      * @param trip The {@link Trip} object containing the trip data.
      * @throws CreateException If there is any Exception during processing.
      */
@@ -116,9 +117,9 @@ public class TripManagerEJB implements TripManagerEJBLocal {
         }
     }
 
-	/**
+    /**
      * Updates a trip's data in the underlying application storage.
-     * 
+     *
      * @param trip The {@link Trip} object containing the trip data.
      * @throws UpdateException If there is any Exception during processing.
      */
@@ -137,7 +138,7 @@ public class TripManagerEJB implements TripManagerEJBLocal {
 
     /**
      * Deletes a trip's data in the underlying application storage.
-     * 
+     *
      * @param trip The {@link Trip} object containing the trip data.
      * @throws DeleteException If there is any Exception during processing.
      */
