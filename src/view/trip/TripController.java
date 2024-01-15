@@ -1,3 +1,4 @@
+package view.trip;
 
 import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
@@ -6,11 +7,10 @@ import java.util.Locale;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import javax.swing.table.TableColumn;
-
-import Factory.ClientFactory;
-import View.Generic.GenericController;
+import view.generic.GenericController;
 import entities.Trip;
+import java.io.IOException;
+import java.util.logging.Level;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,6 +29,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -182,8 +183,8 @@ public class TripController extends GenericController {
 			cbSearchOptions.getSelectionModel().select("Available Trips");
 
 			// Set the "Trip Type" label and the comboBox below it to be invisible
-			lbTripType.setVisible(false);
-			cbTripType.setVisible(false);
+			lbTripType.setVisible(true);
+			cbTripType.setVisible(true);
 
 			// The comboBox will have 5 options
 			ObservableList<String> tripTypes = FXCollections.observableArrayList("", "Culture", "Nature", "Leisure",
@@ -194,11 +195,15 @@ public class TripController extends GenericController {
 			btPurchaseCancel.setText("Purchase Trip");
 			btPurchaseCancel.setDisable(true);
 
-			// Add the 3 radio buttons to a ToggleGroup
+			// Add the 3 radio buttons to a ToggleGroup and set invisible
 			ToggleGroup radioGroup = new ToggleGroup();
 			rbActive.setToggleGroup(radioGroup);
+			rbActive.setVisible(false);
 			rbInactive.setToggleGroup(radioGroup);
+			rbInactive.setVisible(false);
 			rbBoth.setToggleGroup(radioGroup);
+			rbBoth.setVisible(false);
+			lbStatus.setVisible(false);
 
 			// The default button is the Search button
 			this.btSearch.setDefaultButton(true);
@@ -270,23 +275,23 @@ public class TripController extends GenericController {
 		tbTrips.getItems().clear();
 
 		if ("Available Trips".equals(cbSearchOptions.getValue())) {
-			lbTripType.setVisible(false);
-			cbTripType.setVisible(false);
-			lbStatus.setVisible(true);
-			rbActive.setVisible(true);
-			rbInactive.setVisible(true);
-			rbBoth.setVisible(true);
-			btPurchaseCancel.setText("Purchase Trip");
-			// miCancelTrip.setVisible(false);
-			// miPurchaseTrip.setVisible(true);
-		} else {
+			lbTripType.setVisible(true);
+			cbTripType.setVisible(true);
 			lbStatus.setVisible(false);
 			rbActive.setVisible(false);
 			rbInactive.setVisible(false);
 			rbBoth.setVisible(false);
-			lbTripType.setVisible(true);
-			cbTripType.setVisible(true);
 			cbTripType.getSelectionModel().select("");
+			btPurchaseCancel.setText("Purchase Trip");
+			// miCancelTrip.setVisible(false);
+			// miPurchaseTrip.setVisible(true);
+		} else {
+			lbStatus.setVisible(true);
+			rbActive.setVisible(true);
+			rbInactive.setVisible(true);
+			rbBoth.setVisible(true);
+			lbTripType.setVisible(false);
+			cbTripType.setVisible(false);
 			btPurchaseCancel.setText("Cancel Trip");
 			// miCancelTrip.setVisible(true);
 			// miPurchaseTrip.setVisible(false);
@@ -369,4 +374,5 @@ public class TripController extends GenericController {
 	private void btPrint(ActionEvent event) {
 		//print
 	}
+     
 }
