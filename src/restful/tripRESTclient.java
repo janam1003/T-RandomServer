@@ -9,6 +9,7 @@ import entities.Trip;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Jersey REST client generated for REST resource:TripREST [trip]<br>
@@ -22,13 +23,13 @@ import javax.ws.rs.client.WebTarget;
  *
  * @author 2dam
  */
-public class tripRESTclient {
+public class TripRESTclient {
 
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/netbeansBreak/webresources";
 
-    public tripRESTclient() {
+    public TripRESTclient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("trip");
     }
@@ -47,7 +48,7 @@ public class tripRESTclient {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML), Trip.class);
     }
 
-    public <T> T findAllTrips(Class<T> responseType) throws WebApplicationException {
+    public <T> T findAllTrips(GenericType<T> responseType) throws WebApplicationException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
@@ -56,7 +57,7 @@ public class tripRESTclient {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete(Trip.class);
     }
 
-    public <T> T findTripsByTripType(Class<T> responseType, String tripType) throws WebApplicationException {
+    public <T> T findTripsByTripType(GenericType<T> responseType, String tripType) throws WebApplicationException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("byTripType/{0}", new Object[]{tripType}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);

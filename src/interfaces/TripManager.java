@@ -6,7 +6,7 @@ import entities.Trip;
 import exception.LogicException;
 
 /**
- * Logic interface encapsulating business methods for users management.
+ * Logic interface encapsulating business methods for trip management.
  * @author Iñigo
  */
 public interface TripManager {
