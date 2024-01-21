@@ -15,9 +15,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
 
 import javax.crypto.Cipher;
 
-public class EncryptionImplementation implements Encryption{
+public class EncryptionImplementation {
 
-	public String generateHash(String password) {
+	public static String generateHash(String password) {
 		try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] hashBytes = md5.digest(password.getBytes());
@@ -34,7 +34,7 @@ public class EncryptionImplementation implements Encryption{
 	    }
     }
 
-	public String decrypWithPrivateKey(String encryptedText) {
+	public static String decrypWithPrivateKey(String encryptedText) {
 		try {
 			// Load Private Key
 			FileInputStream fis = new FileInputStream("c:\\trastero\\privateKey.der");
@@ -58,7 +58,7 @@ public class EncryptionImplementation implements Encryption{
 		}
 	}
 
-	public void keyPairGenerator() {
+	public static void keyPairGenerator() {
 		try {
 			// Si no existe el archivo de clave privada o pública, se generan
 			if (!new File("c:\\trastero\\publicKey.der").exists() || !new File("c:\\trastero\\privateKey.der").exists()) {
