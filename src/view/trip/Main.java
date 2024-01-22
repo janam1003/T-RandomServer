@@ -16,15 +16,13 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Trip.fxml"));
             
             // Crea la escena a partir del archivo FXML
-            Parent root = loader.load();
+            Parent root = (Parent)loader.load();
             
             // Obtiene el controlador y llama a su método initStage
             TripController controller = loader.getController();
+			controller.setStage(primaryStage);
             controller.initStage(root);
             
-            // Configura y muestra la escena en el escenario
-            primaryStage.setScene(new Scene(root));
-            primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();
         }

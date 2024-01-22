@@ -33,6 +33,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -40,6 +41,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -230,19 +232,19 @@ public class TripController extends GenericController {
 			btPurchaseCancel.setOnAction(this::btPurchaseCancelOnAction);
 			// Event for button Print
 			btPrint.setOnAction(this::btPrint);
-
-			// Set editable the table
-			tableViewTrips.setEditable(true);
 			
 			// COnfigure columns
 			tableColumnDescription.setCellValueFactory(
                     new PropertyValueFactory<>("description"));
             tableColumnType.setCellValueFactory(
-                    new PropertyValueFactory<>("type"));
+                    new PropertyValueFactory<>("tripType"));
             tableColumnStart.setCellValueFactory(
                     new PropertyValueFactory<>("start date"));
             tableColumnEnd.setCellValueFactory(
                     new PropertyValueFactory<>("end date"));
+			// Configure editable columns
+			//tableColumnStart.setCellFactory(getDatePickerCellFactory());
+			//tableColumnEnd.setCellFactory(getDatePickerCellFactory());
 			//Get instance of TripManager
 			tripManager = TripManagerFactory.getTripManager();
 
@@ -251,7 +253,7 @@ public class TripController extends GenericController {
 			stage.setScene(new Scene(root));
 			stage.show();
 		} catch (Exception e) {
-			LOGGER.severe("Exception: " + e.getMessage());
+			LOGGER.severe("Exception in initStage: " + e.getMessage());
 			this.showErrorAlert(e.getMessage());
 		}
 	}
@@ -335,12 +337,7 @@ public class TripController extends GenericController {
 				tableViewTrips.getItems().clear();
 				String selectedTripType = cbTripType.getSelectionModel().getSelectedItem();
 				if (selectedTripType == null || "".equals(selectedTripType)) {
-					trips = tripManager.findAllTrips();
-					for (Trip trip : trips) {
-						tableViewTrips.getItems().add(trip);
-
-
-					}
+				//fafds
 				} else {
 					// trips = getTripsByType(selectedTripType);
 				}
@@ -354,7 +351,9 @@ public class TripController extends GenericController {
 				} else if (rbInactive.isSelected()) {
 					// trips = getInactiveTripInfoByCustomer(customer);
 				} else {
-					// trips = getAllTripInfoByCustomer(customer);
+					trips = tripManager.findAllTrips();
+					ObservableList<Trip> observableList = FXCollections.observableArrayList(trips);
+					tableViewTrips.setItems(observableList);	
 				}
 			}
 			if (trips == null) {
