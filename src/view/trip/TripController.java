@@ -166,14 +166,21 @@ public class TripController extends GenericController {
 	 * TripManager object 
 	 */
 	private TripManager tripManager;
-
+	/*
+	 * TripInfoManager object 
+	 */
+	private TripInfoManager tripInfoManager;
+	/*
+	 * Customer object 
+	 */
+	private Customer customer;
 	/**
 	 * Method to initialize the stage.
 	 *
 	 * @param root     FXML document graph.
 	 * @param customer The customer that is logged in.
 	 */
-	public void initStage(Parent root) {
+	public void initStage(Parent root, Cusotmer loggedCustomer) {
 		try {
 			// Set the window title
 			Stage stage = new Stage();
@@ -247,8 +254,10 @@ public class TripController extends GenericController {
 			//tableColumnEnd.setCellFactory(getDatePickerCellFactory());
 			//Get instance of TripManager
 			tripManager = TripManagerFactory.getTripManager();
-
-
+			//Get instance of TripInfoManager
+			tripInfoManager = TripInfoManagerFactory.getTripInfoManager();
+			// Get the customer that is logged in
+			this.customer = loggedCustomer;
 			// Show the window
 			stage.setScene(new Scene(root));
 			stage.show();
@@ -331,35 +340,33 @@ public class TripController extends GenericController {
 	@FXML
 	private void btSearchOnAction(ActionEvent event) {
 		try {
-			List<Trip> trips = null;
 			String selectedOption = cbSearchOptions.getSelectionModel().getSelectedItem();
 			if ("Available Trips".equals(selectedOption)) {
+				List<Trip> trips = null;
 				tableViewTrips.getItems().clear();
 				String selectedTripType = cbTripType.getSelectionModel().getSelectedItem();
-				if (selectedTripType == null || "".equals(selectedTripType)) {
-				//fafds
-				} else {
-					// trips = getTripsByType(selectedTripType);
-				}
-			} else if ("My Trips".equals(selectedOption)) {
-				if (!rbActive.isSelected() && !rbInactive.isSelected() && !rbBoth.isSelected()) {
-					throw new Exception("You need to select one Status option");
-				}
-				tableViewTrips.getItems().clear();
-				if (rbActive.isSelected()) {
-					// trips = getActiveTripInfoByCustomer(customer);
-				} else if (rbInactive.isSelected()) {
-					// trips = getInactiveTripInfoByCustomer(customer);
-				} else {
+				if (selectedTripType == null || "".equals(selectedTripType)) 
 					trips = tripManager.findAllTrips();
-					ObservableList<Trip> observableList = FXCollections.observableArrayList(trips);
-					tableViewTrips.setItems(observableList);	
-				}
-			}
-			if (trips == null) {
-				throw new Exception("There aren't any trips to be shown");
-			} else {
-				// Aquí llenar la tabla con los atributos de los objetos Trip
+	 			else
+					//que es response type? trips = tripManager.getTripsByType(selectedTripType);
+				if (trips == null) 
+					throw new Exception("There aren't any trips to be shown");
+				ObservableList<Trip> observableList = FXCollections.observableArrayList(trips);
+				tableViewTrips.setItems(observableList);
+			} else if ("My Trips".equals(selectedOption)) {
+				List<TripInfo> tripInfos = null;
+				if (!rbActive.isSelected() && !rbInactive.isSelected() && !rbBoth.isSelected())
+					throw new Exception("You need to select one Status option");
+				tableViewTrips.getItems().clear();
+				if (rbActive.isSelected())
+					tripInfos = findActiveTripInfoByCustomer(customer);
+				else if (rbInactive.isSelected())
+					tripInfos = findInactiveTripInfoByCustomer(customer);
+				else 
+					tripInfos = findAllTripInfoByCustomer(customer);
+				if (tripInfos == null)
+					throw new Exception("There aren't any trips to be shown");
+				//crear observable list de tripinfo haciendo stream de tripinfo y sacando trip ademas de tripinfo
 			}
 		} catch (Exception e) {
 			// Logger
