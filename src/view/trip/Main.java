@@ -1,5 +1,6 @@
 package view.trip;
 
+import entities.Customer;
 import javafx.stage.Stage;
 
 import javafx.application.Application;
@@ -21,7 +22,11 @@ public class Main extends Application {
             // Obtiene el controlador y llama a su método initStage
             TripController controller = loader.getController();
 			controller.setStage(primaryStage);
-            controller.initStage(root);
+            Customer customer = new Customer();
+            
+            customer.setMail("test@gmail.com");
+            customer.setPassword("pass");
+            controller.initStage(root, customer);
             
         } catch(Exception e) {
             e.printStackTrace();
