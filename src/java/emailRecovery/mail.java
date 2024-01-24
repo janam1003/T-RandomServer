@@ -25,31 +25,27 @@ public class mail {
     private static final Logger LOGGER = Logger.getLogger("emailRecovery");
 
     /**
-     * The main method to demonstrate sending an email for account recovery.
-     *
-     * @param args Command line arguments (not used).
-     */
-    public static void main(String[] args) {
-
-        sendEmail("lucasjanamsmile@gmail.com");
-    }
-
-    /**
      * Sends an email for account recovery with a randomly generated password.
      *
      * @param emailUser The email of the user to send the recovery email to.
      * @return The randomly generated password that was sent in the email.
      */
-    public static String sendEmail(String emailUser) {
+    public String sendEmail(String emailUser) {
 
         // Load email credentials from the properties file
         final ResourceBundle bundle = ResourceBundle.getBundle("emailRecovery.emailCredentials");
 
+        final String SENDER_EMAIL = bundle.getString("EMAIL");
+
+        final String SENDER_PASSWORD = bundle.getString("PASSWORD");
+
+        final String SENDER_CYPHEREMAIL = bundle.getString("CYPEREMAIL");
+
+        final String SENDER_CYPHERPASSWORD = bundle.getString("CYPERPASSWORD");
+
         final String ZOHO_HOST = "smtp.zoho.eu";
         final String TLS_PORT = "897";
-
-        final String SENDER_USERNAME = "g3crud@zohomail.eu";
-        final String SENDER_PASSWORD = "qSV7#d&+STizpLG";
+        final String RECEIVER_EMAIL = emailUser;
         final String newPassword = generateRandomPassword(Integer.parseInt(bundle.getString("PASSWORDCHARACTERS")));
 
         // protocol properties
@@ -62,18 +58,6 @@ public class mail {
         // close connection upon quit being sent
         props.put("mail.smtps.quitwait", "false");
 
-        /*
-        try {
-
-            user = descifrarTexto("Clave", "user");
-
-            emailKey = descifrarTexto("Clave", "key");
-
-        } catch (Exception ex) {
-
-            LOGGER.log(Level.SEVERE, "Not able to decrypt user and emailKey.{0}", ex.getMessage());
-        }*/
-        //final String receiver = emailUser;
         Session session = Session.getInstance(props, null);
 
         try {
@@ -82,9 +66,9 @@ public class mail {
             final MimeMessage msg = new MimeMessage(session);
 
             // set recipients and content
-            msg.setFrom(new InternetAddress(SENDER_USERNAME));
+            msg.setFrom(new InternetAddress(SENDER_EMAIL));
 
-            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("lucasjanamsmile@gmail.com", false));
+            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(RECEIVER_EMAIL, false));
 
             msg.setSubject("Email Recovery");
 
@@ -127,7 +111,7 @@ public class mail {
             Transport transport = session.getTransport("smtps");
 
             // send the mail
-            transport.connect(ZOHO_HOST, SENDER_USERNAME, SENDER_PASSWORD);
+            transport.connect(ZOHO_HOST, SENDER_EMAIL, SENDER_PASSWORD);
 
             transport.sendMessage(msg, msg.getAllRecipients());
 
