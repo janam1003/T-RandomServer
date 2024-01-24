@@ -5,7 +5,6 @@ import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -14,9 +13,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface UserManagerEJBLocal {
-    
-    
-     /**
+
+    /**
      * Creates a new user.
      *
      * @param user The User to be created.
@@ -39,7 +37,8 @@ public interface UserManagerEJBLocal {
      * @throws DeleteException If there is any Exception during processing.
      */
     public void deleteUser(String userId) throws DeleteException;
-        /**
+
+    /**
      * Retrieves a customer by their email address.
      *
      * @param mail The email address of the customer.
@@ -47,13 +46,5 @@ public interface UserManagerEJBLocal {
      * @throws ReadException If there is any Exception during processing.
      */
     public User findUserByMail(String mail) throws ReadException;
-    
-    /**
-     * Method to send an user a new password  to recover an mail
-     * 
-     * @param user to send an user a new password
-     * @throws ReadException If there is any Exception during processing.
-     */
-    public void sendRecoveryMail(User user) throws ReadException;
-    
+
 }

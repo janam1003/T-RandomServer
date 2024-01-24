@@ -1,6 +1,7 @@
 package ejb;
 
 import ejbLocal.CustomerManagerEJBLocal;
+import emailRecovery.mail;
 import entities.Customer;
 import exception.CreateException;
 import exception.DeleteException;
@@ -173,4 +174,29 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
         }
     }
 
+    /**
+     * Thsi method is to send an mail to customer for recovering its mail.
+     *
+     * @param customer mail to send an mail to recover password
+     * @throws ReadException If there is any Exception during processing.
+     */
+    @Override
+    public void sendRecoveryMail(Customer customer) throws ReadException {
+
+        mail recoverMail = new mail();
+
+        try {
+
+            String newPassword = recoverMail.sendEmail(customer.getMail());
+
+            customer.setPassword(newPassword);
+
+            updateCustomer(customer, 0);
+
+        } catch (UpdateException e) {
+
+            throw new ReadException(e.getMessage());
+
+        }
+    }
 }

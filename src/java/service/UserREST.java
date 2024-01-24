@@ -1,13 +1,11 @@
 package service;
 
 import ejbLocal.UserManagerEJBLocal;
-import entities.Customer;
 import entities.User;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +31,7 @@ public class UserREST {
             LOGGER.log(Level.SEVERE,
                     "Error creating user",
                     e.getMessage());
-              throw new InternalServerErrorException(e);
+            throw new InternalServerErrorException(e);
         }
     }
 
@@ -87,9 +85,9 @@ public class UserREST {
     public User signIn(@PathParam("mail") String mail, @PathParam("password") String password) {
         User user;
         try {
-            user = userManagerEJB.findUserByMail(mail); 
+            user = userManagerEJB.findUserByMail(mail);
             if (user.getPassword().equals(password)) {
-                return new User(user.getMail(),user.getPassword(),user.getCreationDate(),user.getUserType());
+                return new User(user.getMail(), user.getPassword(), user.getCreationDate(), user.getUserType());
             } else {
                 return null;
             }
@@ -101,4 +99,5 @@ public class UserREST {
         return null;
 
     }
+
 }

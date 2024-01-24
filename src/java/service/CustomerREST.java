@@ -2,6 +2,7 @@ package service;
 
 import ejbLocal.CustomerManagerEJBLocal;
 import entities.Customer;
+import exception.ReadException;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -120,5 +121,17 @@ public class CustomerREST {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error deleting customer", e);
         }
+    }
+
+    @PUT
+    @Path("sendRecoveryEmail")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void sendRecoveryEmail(Customer entity) {
+        try {
+            ejb.sendRecoveryMail(entity);
+        } catch (ReadException ex) {
+            LOGGER.log(Level.SEVERE, "Error sending a recovery mail to a customer", ex.getMessage());
+        }
+
     }
 }
