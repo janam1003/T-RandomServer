@@ -185,6 +185,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
 
         mail recoverMail = new mail();
 
+        /*
         try {
 
             String newPassword = recoverMail.sendEmail(customer.getMail());
@@ -197,6 +198,6 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
 
             throw new ReadException(e.getMessage());
 
-        }
+        }*/
     }
 }

@@ -1,6 +1,5 @@
 package emailRecovery;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,6 +30,8 @@ public class mail {
     //  Logger for the class.
     private static final Logger LOGGER = Logger.getLogger("emailRecovery");
 
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("emailRecovery.config");
+
     static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded);
@@ -43,11 +44,16 @@ public class mail {
      * @return The randomly generated password that was sent in the email.
      */
     public String sendEmail(String emailUser) {
+
         final String newPassword;
+
+        // Load Private Key
+        String privateKeyFilePath = bundle.getString("PRIVATEKEYPATH");
+
         try {
 
             // Load encrypted string with email 
-            String privateKey = readFile("C:\\Users\\2dam\\Desktop\\keys\\keysprivateKey.der");
+            String privateKey = readFile(privateKeyFilePath);
             String decryptedCredentials = EncryptionImplementation.descifrarCredentials(privateKey);
 
             // Split credentials
@@ -127,11 +133,8 @@ public class mail {
 
             LOGGER.info("Zoho mail sent successfully");
 
-        } catch (MessagingException e) {
+        } catch (IOException | NumberFormatException | MessagingException e) {
 
-            throw new RuntimeException(e);
-
-        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 

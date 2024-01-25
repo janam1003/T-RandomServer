@@ -2,26 +2,17 @@ package encryption;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
-
-import javax.crypto.BadPaddingException;
+import java.util.ResourceBundle;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
@@ -30,7 +21,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class EncryptionImplementation {
 
-	private static byte[] salt = "g3 CRUD is salt!".getBytes();
+    private static final byte[] salt = "g3 CRUD is salt!".getBytes();
+
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("emailRecovery.config");
 
     public static String generateHash(String password) {
         // Convert the byte array to a hexadecimal representation
@@ -51,10 +44,16 @@ public class EncryptionImplementation {
     }
 
     public static String decrypWithPrivateKey(String encryptedText) {
+
+        // Load Private Key
+        String privateKeyFilePath = bundle.getString("PRIVATEKEYPATH");
+
         byte[] encryptedTextBytes = null;
+
         try {
+
             // Load Private Key
-            FileInputStream fis = new FileInputStream("c:\\trastero\\privateKey.der");
+            FileInputStream fis = new FileInputStream(privateKeyFilePath);
             byte[] privateKeyBytes = new byte[fis.available()];
             fis.read(privateKeyBytes);
             fis.close();
@@ -75,9 +74,9 @@ public class EncryptionImplementation {
         return new String(encryptedTextBytes);
     }
 
-	/**
+    /**
      * Retorna el contenido de un fichero
-     * 
+     *
      * @param path Path del fichero
      * @return El texto del fichero
      */
@@ -92,17 +91,19 @@ public class EncryptionImplementation {
         return ret;
     }
 
-	/**
-     * Descifra un texto con AES, modo CBC y padding PKCS5Padding (simétrica) y lo
-     * retorna
-     * 
+    /**
+     * Descifra un texto con AES, modo CBC y padding PKCS5Padding (simétrica) y
+     * lo retorna
+     *
      * @param clave La clave del usuario
      */
     public static String descifrarCredentials(String clave) {
         String ret = null;
 
+        String cypherMailPath = bundle.getString("CYPHERMAILPATH");
+
         // Fichero leído
-        byte[] fileContent = fileReader("C:\\Users\\2dam\\Desktop\\keys\\mailCredentials.properties");
+        byte[] fileContent = fileReader(cypherMailPath);
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
         try {
@@ -119,7 +120,7 @@ public class EncryptionImplementation {
             byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(fileContent, 16, fileContent.length));
             ret = new String(decodedMessage);
         } catch (Exception e) {
-            
+
         }
         return ret;
     }
