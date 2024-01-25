@@ -1,6 +1,7 @@
 package service;
 
 import ejbLocal.CustomerManagerEJBLocal;
+import static encryption.EncryptionImplementation.decrypWithPrivateKey;
 import entities.Customer;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -96,9 +97,15 @@ public class CustomerREST {
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateCustomer(Customer customer) {
+    public void updateCustomer(Customer customer, int encrypted) {
         try {
-            ejb.updateCustomer(customer);
+            if (encrypted == 1) {
+                customer.setPassword(decrypWithPrivateKey(customer.getPassword()));
+                ejb.updateCustomer(customer);
+            } else {
+                ejb.updateCustomer(customer);
+
+            }
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);

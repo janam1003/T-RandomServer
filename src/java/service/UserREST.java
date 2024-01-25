@@ -82,7 +82,7 @@ public class UserREST {
         return user;
     }
 
-    @GET
+    @POST
     @Path("{mail}/{password}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
