@@ -1,6 +1,8 @@
 package service;
 
 import ejbLocal.UserManagerEJBLocal;
+import static encryption.EncryptionImplementation.decrypWithPrivateKey;
+import static encryption.EncryptionImplementation.generateHash;
 import entities.Customer;
 import entities.User;
 import exception.CreateException;
@@ -87,8 +89,8 @@ public class UserREST {
     public User signIn(@PathParam("mail") String mail, @PathParam("password") String password) {
         User user;
         try {
-            user = userManagerEJB.findUserByMail(mail); 
-            if (user.getPassword().equals(password)) {
+            user = userManagerEJB.findUserByMail(mail);  
+            if (user.getPassword().equals(generateHash(decrypWithPrivateKey(password)))) {
                 return new User(user.getMail(),user.getPassword(),user.getCreationDate(),user.getUserType());
             } else {
                 return null;
@@ -97,6 +99,8 @@ public class UserREST {
         } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
 
+        } catch (Exception ex) {
+            Logger.getLogger(UserREST.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
 

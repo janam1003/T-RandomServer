@@ -17,7 +17,7 @@ import javax.crypto.Cipher;
 
 public class EncryptionImplementation {
 
-	public static String generateHash(String password) {
+	public static String generateHash(String password) throws Exception {
 		try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] hashBytes = md5.digest(password.getBytes());
@@ -34,7 +34,7 @@ public class EncryptionImplementation {
 	    }
     }
 
-	public static String decrypWithPrivateKey(String encryptedText) {
+	public static String decrypWithPrivateKey(String encryptedText) throws Exception {
 		try {
 			// Load Private Key
 			FileInputStream fis = new FileInputStream("c:\\trastero\\privateKey.der");
