@@ -47,7 +47,7 @@ public class mail {
 
         // Load Private Key
         String privateKeyFilePath = encryption.AsimetricEncryption.privateKeyPath;
-        LOGGER.info("av er joderrrr que funcionesss!!!! === " + privateKeyFilePath);
+        
         try {
 
             // Load encrypted string with email 

@@ -47,7 +47,6 @@ public class EncryptionImplementation {
 
         // Load Private Key
         String privateKeyFilePath = encryption.AsimetricEncryption.privateKeyPath;
-        
 
         byte[] encryptedTextBytes = null;
 

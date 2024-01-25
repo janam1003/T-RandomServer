@@ -9,7 +9,7 @@ import java.security.PublicKey;
 import javax.ws.rs.InternalServerErrorException;
 
 public class AsimetricEncryption {
-    
+
     public static String privateKeyPath;
 
     public static void keyPairGenerator() {
@@ -23,7 +23,7 @@ public class AsimetricEncryption {
             // Create a File object for the directory
             File directory = new File(directoryPath);
             privateKeyPath = directoryPath + File.separator + "keysprivateKey.der";
-            System.out.println("\nJoderrrr path " + privateKeyPath + "and" + directoryPath);
+
             // Check if the directory exists
             if (!directory.exists()) {
                 // Attempt to create the directory
