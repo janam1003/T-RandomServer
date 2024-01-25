@@ -23,7 +23,7 @@ public class EncryptionImplementation {
 
     private static final byte[] salt = "g3 CRUD is salt!".getBytes();
 
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("emailRecovery.config");
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.config");
 
     public static String generateHash(String password) {
         // Convert the byte array to a hexadecimal representation
@@ -46,7 +46,8 @@ public class EncryptionImplementation {
     public static String decrypWithPrivateKey(String encryptedText) {
 
         // Load Private Key
-        String privateKeyFilePath = bundle.getString("PRIVATEKEYPATH");
+        String privateKeyFilePath = encryption.AsimetricEncryption.privateKeyPath;
+        
 
         byte[] encryptedTextBytes = null;
 

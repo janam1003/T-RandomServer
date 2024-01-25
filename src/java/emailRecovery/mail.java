@@ -11,9 +11,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import encryption.EncryptionImplementation;
-
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -30,7 +28,7 @@ public class mail {
     //  Logger for the class.
     private static final Logger LOGGER = Logger.getLogger("emailRecovery");
 
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("emailRecovery.config");
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.config");
 
     static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
@@ -43,13 +41,13 @@ public class mail {
      * @param emailUser The email of the user to send the recovery email to.
      * @return The randomly generated password that was sent in the email.
      */
-    public String sendEmail(String emailUser) {
+    public static String sendEmail(String emailUser) {
 
         final String newPassword;
 
         // Load Private Key
-        String privateKeyFilePath = bundle.getString("PRIVATEKEYPATH");
-
+        String privateKeyFilePath = encryption.AsimetricEncryption.privateKeyPath;
+        LOGGER.info("av er joderrrr que funcionesss!!!! === " + privateKeyFilePath);
         try {
 
             // Load encrypted string with email 
