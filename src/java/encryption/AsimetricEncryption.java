@@ -40,8 +40,8 @@ public class AsimetricEncryption {
                         publicKeyFile.createNewFile();
                         privateKeyFile.createNewFile();
 
-                        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
-                        keyPairGenerator.initialize(256);
+                        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+                        keyPairGenerator.initialize(2048);
                         KeyPair key = keyPairGenerator.generateKeyPair();
 
                         PublicKey publicKey = key.getPublic();

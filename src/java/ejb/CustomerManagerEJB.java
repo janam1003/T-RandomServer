@@ -2,6 +2,8 @@ package ejb;
 
 import ejbLocal.CustomerManagerEJBLocal;
 import emailRecovery.mail;
+import static encryption.EncryptionImplementation.decrypWithPrivateKey;
+import static encryption.EncryptionImplementation.generateHash;
 import entities.Customer;
 import exception.CreateException;
 import exception.DeleteException;
@@ -142,14 +144,22 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * @throws UpdateException If there is any Exception during processing.
      */
     @Override
-    public void updateCustomer(Customer customer) throws UpdateException {
+    public void updateCustomer(Customer customer, boolean encrypted) throws UpdateException {
+        
         try {
+            if (encrypted == true) {
+            customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
             entityManager.merge(customer);
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
+            } else {
+                customer.setPassword(generateHash(customer.getPassword()));
+                entityManager.merge(customer);
+            }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
             throw new UpdateException(e.getMessage());
         }
+       
     }
 
     /**
@@ -185,19 +195,19 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
 
         mail recoverMail = new mail();
 
-        /*
+        
         try {
 
             String newPassword = recoverMail.sendEmail(customer.getMail());
 
             customer.setPassword(newPassword);
 
-            updateCustomer(customer, 0);
+            updateCustomer(customer, false);
 
         } catch (UpdateException e) {
 
             throw new ReadException(e.getMessage());
 
-        }*/
+        }
     }
 }

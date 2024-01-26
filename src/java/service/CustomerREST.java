@@ -100,16 +100,10 @@ public class CustomerREST {
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateCustomer(Customer customer, @PathParam("encrypted") boolean encrypted) {
+    public void updateCustomer(Customer customer,@PathParam("encrypted") boolean encrypted) {
         try {
-            if (encrypted == true) {
-                customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
-                ejb.updateCustomer(customer);
-            } else {
-                customer.setPassword(generateHash(customer.getPassword()));
-                ejb.updateCustomer(customer);
-
-            }
+              customer.setPassword(generateHash(customer.getPassword()));
+                ejb.updateCustomer(customer, encrypted);
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);

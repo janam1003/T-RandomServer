@@ -69,9 +69,10 @@ public interface CustomerManagerEJBLocal {
      * Updates an existing customer.
      *
      * @param customer The customer to be updated.
+     * @param encrypted Shows if the password is encrypted or not
      * @throws UpdateException If there is any Exception during processing.
      */
-    public void updateCustomer(Customer customer) throws UpdateException;
+    public void updateCustomer(Customer customer, boolean encrypted) throws UpdateException;
 
     /**
      * Deletes a customer by their ID.
