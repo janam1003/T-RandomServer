@@ -69,6 +69,7 @@ public class EncryptionImplementation {
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] decryptedData = cipher.doFinal(encryptedTextBytes);
 
+
         } catch (Exception e) {
             //throw new Exception("Error decrypting with private key:" + e.getMessage());
         }

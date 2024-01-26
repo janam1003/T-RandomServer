@@ -66,6 +66,7 @@ public class Customer extends User {
      */
     public Customer() {
     }
+    
 
     /**
      * Retrieves the name of the customer.

@@ -1,6 +1,8 @@
 package service;
 
 import ejbLocal.CustomerManagerEJBLocal;
+import static encryption.EncryptionImplementation.decrypWithPrivateKey;
+import static encryption.EncryptionImplementation.generateHash;
 import entities.Customer;
 import exception.ReadException;
 import javax.ejb.EJB;
@@ -88,6 +90,7 @@ public class CustomerREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createCustomer(Customer customer) {
         try {
+            customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
             ejb.createCustomer(customer);
             LOGGER.log(Level.INFO, "Created customer with id: {0}", customer.getMail());
         } catch (Exception e) {
@@ -97,9 +100,16 @@ public class CustomerREST {
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateCustomer(Customer customer) {
+    public void updateCustomer(Customer customer, @PathParam("encrypted") boolean encrypted) {
         try {
-            ejb.updateCustomer(customer);
+            if (encrypted == true) {
+                customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
+                ejb.updateCustomer(customer);
+            } else {
+                customer.setPassword(generateHash(customer.getPassword()));
+                ejb.updateCustomer(customer);
+
+            }
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
