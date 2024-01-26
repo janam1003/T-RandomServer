@@ -9,7 +9,6 @@ import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +34,7 @@ public class UserREST {
             LOGGER.log(Level.SEVERE,
                     "Error creating user",
                     e.getMessage());
-              throw new InternalServerErrorException(e);
+            throw new InternalServerErrorException(e);
         }
     }
 
@@ -105,4 +104,5 @@ public class UserREST {
         return null;
 
     }
+
 }

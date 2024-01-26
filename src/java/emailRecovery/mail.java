@@ -1,5 +1,8 @@
 package emailRecovery;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Properties;
 import javax.mail.Message;
@@ -8,6 +11,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import encryption.EncryptionImplementation;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -24,43 +28,52 @@ public class mail {
     //  Logger for the class.
     private static final Logger LOGGER = Logger.getLogger("emailRecovery");
 
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.config");
+
+    static String readFile(String path) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded);
+    }
+
     /**
      * Sends an email for account recovery with a randomly generated password.
      *
      * @param emailUser The email of the user to send the recovery email to.
      * @return The randomly generated password that was sent in the email.
      */
-    public String sendEmail(String emailUser) {
+    public static String sendEmail(String emailUser) {
 
-        // Load email credentials from the properties file
-        final ResourceBundle bundle = ResourceBundle.getBundle("emailRecovery.emailCredentials");
+        final String newPassword;
 
-        final String SENDER_EMAIL = bundle.getString("EMAIL");
-
-        final String SENDER_PASSWORD = bundle.getString("PASSWORD");
-
-        final String SENDER_CYPHEREMAIL = bundle.getString("CYPEREMAIL");
-
-        final String SENDER_CYPHERPASSWORD = bundle.getString("CYPERPASSWORD");
-
-        final String ZOHO_HOST = "smtp.zoho.eu";
-        final String TLS_PORT = "897";
-        final String RECEIVER_EMAIL = emailUser;
-        final String newPassword = generateRandomPassword(Integer.parseInt(bundle.getString("PASSWORDCHARACTERS")));
-
-        // protocol properties
-        Properties props = System.getProperties();
-        props.setProperty("mail.smtps.host", ZOHO_HOST);
-        props.setProperty("mail.smtp.port", TLS_PORT);
-        props.setProperty("mail.smtp.starttls.enable", "true");
-        props.setProperty("mail.smtps.auth", "true");
-
-        // close connection upon quit being sent
-        props.put("mail.smtps.quitwait", "false");
-
-        Session session = Session.getInstance(props, null);
+        // Load Private Key from bundle
+        String privateKeyFilePath = bundle.getString("SIMETRICKEYPATH");
 
         try {
+            // Load encrypted string with email 
+            String privateKey = readFile(privateKeyFilePath);
+            String decryptedCredentials = EncryptionImplementation.descifrarCredentials(privateKey);
+
+            // Split credentials
+            String[] credentials = decryptedCredentials.split("=");
+            String SENDER_EMAIL = credentials[3];
+            String SENDER_PASSWORD = credentials[5];
+
+            final String ZOHO_HOST = "smtp.zoho.eu";
+            final String TLS_PORT = "897";
+            final String RECEIVER_EMAIL = emailUser;
+            newPassword = generateRandomPassword(Integer.parseInt(credentials[1]));
+
+            // protocol properties
+            Properties props = System.getProperties();
+            props.setProperty("mail.smtps.host", ZOHO_HOST);
+            props.setProperty("mail.smtp.port", TLS_PORT);
+            props.setProperty("mail.smtp.starttls.enable", "true");
+            props.setProperty("mail.smtps.auth", "true");
+
+            // close connection upon quit being sent
+            props.put("mail.smtps.quitwait", "false");
+
+            Session session = Session.getInstance(props, null);
 
             // create the message
             final MimeMessage msg = new MimeMessage(session);
@@ -117,10 +130,9 @@ public class mail {
 
             LOGGER.info("Zoho mail sent successfully");
 
-        } catch (MessagingException e) {
+        } catch (IOException | NumberFormatException | MessagingException e) {
 
             throw new RuntimeException(e);
-
         }
 
         return newPassword;
@@ -157,5 +169,9 @@ public class mail {
 
         // Return the final randomly generated password as a String
         return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        sendEmail("cmlneb21893@gmail.com");
     }
 }
