@@ -45,11 +45,10 @@ public class mail {
 
         final String newPassword;
 
-        // Load Private Key
-        String privateKeyFilePath = encryption.AsimetricEncryption.privateKeyPath;
-        
-        try {
+        // Load Private Key from bundle
+        String privateKeyFilePath = bundle.getString("SIMETRICKEYPATH");
 
+        try {
             // Load encrypted string with email 
             String privateKey = readFile(privateKeyFilePath);
             String decryptedCredentials = EncryptionImplementation.descifrarCredentials(privateKey);
@@ -170,5 +169,9 @@ public class mail {
 
         // Return the final randomly generated password as a String
         return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        sendEmail("cmlneb21893@gmail.com");
     }
 }

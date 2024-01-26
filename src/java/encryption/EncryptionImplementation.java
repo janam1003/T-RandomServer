@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -91,6 +92,7 @@ public class EncryptionImplementation {
         return ret;
     }
 
+
     /**
      * Descifra un texto con AES, modo CBC y padding PKCS5Padding (simétrica) y
      * lo retorna
@@ -120,7 +122,7 @@ public class EncryptionImplementation {
             byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(fileContent, 16, fileContent.length));
             ret = new String(decodedMessage);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return ret;
     }
