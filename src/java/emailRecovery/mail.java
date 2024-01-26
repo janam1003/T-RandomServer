@@ -170,8 +170,4 @@ public class mail {
         // Return the final randomly generated password as a String
         return sb.toString();
     }
-
-    public static void main(String[] args) {
-        sendEmail("cmlneb21893@gmail.com");
-    }
 }
