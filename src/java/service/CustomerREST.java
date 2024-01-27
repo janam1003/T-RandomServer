@@ -100,7 +100,7 @@ public class CustomerREST {
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateCustomer(Customer customer,@PathParam("encrypted") boolean encrypted) {
+    public void updateCustomer(Customer customer, @PathParam("encrypted") boolean encrypted) {
         try {
               customer.setPassword(generateHash(customer.getPassword()));
                 ejb.updateCustomer(customer, encrypted);

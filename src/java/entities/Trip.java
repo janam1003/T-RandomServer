@@ -42,7 +42,7 @@ public class Trip implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany(mappedBy = "trip", cascade = REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "trip", cascade = REMOVE, fetch = FetchType.EAGER)
     private List<TripInfo> tripInfo;
 
     @ManyToMany(fetch = EAGER)
@@ -110,6 +110,7 @@ public class Trip implements Serializable {
         this.tripType = tripType;
     }
 
+    @XmlTransient
     public List<City> getCities() {
         return cities;
     }

@@ -58,7 +58,7 @@ public class Customer extends User {
     /**
      * A list of TripInfo objects associated with this customer.
      */
-    @OneToMany(mappedBy = "customer", cascade = REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = REMOVE, fetch = FetchType.EAGER)
     private List<TripInfo> tripsInfo;
 
     /**
