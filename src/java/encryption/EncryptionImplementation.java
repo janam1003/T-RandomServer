@@ -3,6 +3,7 @@ package encryption;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
@@ -12,6 +13,7 @@ import java.security.PrivateKey;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.ResourceBundle;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -64,10 +66,11 @@ public class EncryptionImplementation {
             PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 
             // Decrypt data
-            encryptedTextBytes = encryptedText.getBytes();
+            encryptedTextBytes = Base64.getDecoder().decode(encryptedText); // Decode the Base64 string back into bytes
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] decryptedData = cipher.doFinal(encryptedTextBytes);
+           return new String(decryptedData, StandardCharsets.UTF_8); // Convert the decrypted bytes back into a string
 
 
         } catch (Exception e) {
