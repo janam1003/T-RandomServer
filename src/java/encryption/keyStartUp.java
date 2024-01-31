@@ -8,7 +8,7 @@ import javax.ejb.Startup;
  *
  * @author 2dam
  */
-@Singleton
+/*@Singleton
 @Startup
 public class keyStartUp {
 
@@ -17,3 +17,4 @@ public class keyStartUp {
         AsimetricEncryption.keyPairGenerator();
     }
 }
+*/

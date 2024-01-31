@@ -49,7 +49,7 @@ public class EncryptionImplementation {
     public static String decrypWithPrivateKey(String encryptedText) {
 
         // Load Private Key
-        String privateKeyFilePath = encryption.AsimetricEncryption.privateKeyPath;
+        String privateKeyFilePath = "/encryption/keysprivateKey.der";
 
         byte[] encryptedTextBytes = null;
 

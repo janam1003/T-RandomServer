@@ -46,12 +46,12 @@ public class mail {
         final String newPassword;
 
         // Load Private Key from bundle
-        String privateKeyFilePath = bundle.getString("SIMETRICKEYPATH");
+        String simetricKeyFilePath = bundle.getString("SIMETRICKEYPATH");
 
         try {
             // Load encrypted string with email 
-            String privateKey = readFile(privateKeyFilePath);
-            String decryptedCredentials = EncryptionImplementation.descifrarCredentials(privateKey);
+            String simetricKey = readFile(simetricKeyFilePath);
+            String decryptedCredentials = EncryptionImplementation.descifrarCredentials(simetricKey);
 
             // Split credentials
             String[] credentials = decryptedCredentials.split("=");
