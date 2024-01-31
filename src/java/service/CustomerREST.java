@@ -4,7 +4,10 @@ import ejbLocal.CustomerManagerEJBLocal;
 import static encryption.EncryptionImplementation.decrypWithPrivateKey;
 import static encryption.EncryptionImplementation.generateHash;
 import entities.Customer;
+import exception.CreateException;
+import exception.DeleteException;
 import exception.ReadException;
+import exception.UpdateException;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -27,7 +30,7 @@ public class CustomerREST {
         try {
             customers = ejb.findAllCustomers();
             LOGGER.log(Level.INFO, "Retrieved all customers");
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
         }
         return customers;
@@ -41,7 +44,7 @@ public class CustomerREST {
         try {
             customer = ejb.findCustomerByMail(mail);
             LOGGER.log(Level.INFO, "Retrieved customer by mail: {0}", mail);
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
         }
         return customer;
@@ -54,7 +57,7 @@ public class CustomerREST {
         List<Customer> customers = null;
         try {
             customers = ejb.findCustomersWithTrips();
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with trips", e);
         }
         return customers;
@@ -67,7 +70,7 @@ public class CustomerREST {
         List<Customer> customers = null;
         try {
             customers = ejb.findAllOrderByCreationDate();
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers by cretion date: ");
         }
         return customers;
@@ -80,7 +83,7 @@ public class CustomerREST {
         List<Customer> customers = null;
         try {
             customers = ejb.findOneWeekTrips();
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with more than a week trips ");
         }
         return customers;
@@ -94,7 +97,7 @@ public class CustomerREST {
             customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
             ejb.createCustomer(customer);
             LOGGER.log(Level.INFO, "Created customer with id: {0}", customer.getMail());
-        } catch (Exception e) {
+        } catch (CreateException e) {
             LOGGER.log(Level.SEVERE, "Error creating customer", e);
         }
     }
@@ -107,7 +110,7 @@ public class CustomerREST {
               customer.setPassword(generateHash(customer.getPassword()));
                 ejb.updateCustomer(customer, encrypted);
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
-        } catch (Exception e) {
+        } catch (UpdateException e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
         }
     }
@@ -118,7 +121,7 @@ public class CustomerREST {
         try {
             ejb.deleteCustomer(id);
             LOGGER.log(Level.INFO, "Deleted customer with id: {0}", id);
-        } catch (Exception e) {
+        } catch (DeleteException e) {
             LOGGER.log(Level.SEVERE, "Error deleting customer", e);
         }
     }
