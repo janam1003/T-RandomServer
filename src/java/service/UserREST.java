@@ -4,6 +4,7 @@ import ejbLocal.UserManagerEJBLocal;
 import static encryption.EncryptionImplementation.decrypWithPrivateKey;
 import static encryption.EncryptionImplementation.generateHash;
 import entities.Customer;
+import entities.EnumUserType;
 import entities.User;
 import exception.CreateException;
 import exception.DeleteException;
@@ -82,21 +83,22 @@ public class UserREST {
     }
 
     @POST
-    @Path("{mail}/{password}")
+    @Path("signIn")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User signIn(@PathParam("mail") String mail, @PathParam("password") String password) {
-        User user;
+    public User signIn(User usser) {
+        User userReturn = null;
         try {
-            user = userManagerEJB.findUserByMail(mail);  
-            if (user.getPassword().equals(generateHash(decrypWithPrivateKey(password)))) {
-                return new User(user.getMail(),user.getPassword(),user.getCreationDate(),user.getUserType());
+            userReturn = userManagerEJB.findUserByMail(usser.getMail()); 
+            if (userReturn.getPassword().equals(generateHash(decrypWithPrivateKey(usser.getPassword())))) {
+                userReturn.setPassword(null);
+                return new User(userReturn.getMail(), null, userReturn.getCreationDate(), userReturn.getUserType());
             } else {
                 return null;
             }
 
         } catch (ReadException e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
+            LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + usser.getMail(), e);
 
         } catch (Exception ex) {
             Logger.getLogger(UserREST.class.getName()).log(Level.SEVERE, null, ex);

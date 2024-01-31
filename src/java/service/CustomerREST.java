@@ -35,7 +35,7 @@ public class CustomerREST {
 
     @GET
     @Path("/byMail/{mail}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Customer getCustomerByMail(@PathParam("mail") String mail) {
         Customer customer = null;
         try {
@@ -49,7 +49,7 @@ public class CustomerREST {
 
     @GET
     @Path("/withTrips")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getCustomersWithTrips() {
         List<Customer> customers = null;
         try {
@@ -62,20 +62,20 @@ public class CustomerREST {
 
     @GET
     @Path("/CreationDate")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getCustomersOrderByCreationDate() {
         List<Customer> customers = null;
         try {
             customers = ejb.findAllOrderByCreationDate();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customers by address: ");
+            LOGGER.log(Level.SEVERE, "Error retrieving customers by cretion date: ");
         }
         return customers;
     }
 
     @GET
     @Path("/MoreThanOneWeekTrips")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getCustomersOneWeekTrips() {
         List<Customer> customers = null;
         try {
@@ -90,6 +90,7 @@ public class CustomerREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createCustomer(Customer customer) {
         try {
+            System.out.println("customer desencriptar = "+customer+"CUSTOMER REST RECIBE = " + decrypWithPrivateKey(customer.getPassword()) + " y ahora hasheado= " + generateHash(customer.getPassword()));
             customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
             ejb.createCustomer(customer);
             LOGGER.log(Level.INFO, "Created customer with id: {0}", customer.getMail());
@@ -102,6 +103,7 @@ public class CustomerREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateCustomer(Customer customer, @PathParam("encrypted") boolean encrypted) {
         try {
+            LOGGER.info("Updating customer");
               customer.setPassword(generateHash(customer.getPassword()));
                 ejb.updateCustomer(customer, encrypted);
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
@@ -110,12 +112,6 @@ public class CustomerREST {
         }
     }
 
-    /**
-     * Test para push
-     *
-     * @param id
-     * @return
-     */
     @DELETE
     @Path("/Delete/{id}")
     public void deleteCustomer(@PathParam("id") String id) {
