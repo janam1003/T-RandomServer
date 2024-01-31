@@ -45,8 +45,8 @@ public class mail {
 
         final String newPassword;
 
-        // Load Private Key from bundle
-        String simetricKeyFilePath = bundle.getString("SIMETRICKEYPATH");
+        // Load Private Key 
+        String simetricKeyFilePath = "/emailRecovery/simetricKey.der";
 
         try {
             // Load encrypted string with email 
