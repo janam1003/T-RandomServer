@@ -3,9 +3,9 @@ package encryption;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,7 +26,7 @@ public class EncryptionImplementation {
 
     private static final byte[] salt = "g3 CRUD is salt!".getBytes();
 
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.config");
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.mailCredentials");
 
     public static String generateHash(String password) {
         // Convert the byte array to a hexadecimal representation
@@ -49,14 +49,12 @@ public class EncryptionImplementation {
     public static String decrypWithPrivateKey(String encryptedText) {
 
         // Load Private Key
-        String privateKeyFilePath = "/encryption/keysprivateKey.der";
 
         byte[] encryptedTextBytes = null;
 
         try {
-
             // Load Private Key
-            FileInputStream fis = new FileInputStream(privateKeyFilePath);
+            InputStream fis = EncryptionImplementation.class.getResourceAsStream("keysprivateKey.der");
             byte[] privateKeyBytes = new byte[fis.available()];
             fis.read(privateKeyBytes);
             fis.close();
@@ -70,13 +68,13 @@ public class EncryptionImplementation {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] decryptedData = cipher.doFinal(encryptedTextBytes);
-           return new String(decryptedData, StandardCharsets.UTF_8); // Convert the decrypted bytes back into a string
+            return new String(decryptedData, StandardCharsets.UTF_8); // Convert the decrypted bytes back into a string
 
 
         } catch (Exception e) {
-            //throw new Exception("Error decrypting with private key:" + e.getMessage());
+            e.printStackTrace();
         }
-        return new String(encryptedTextBytes);
+        return null;
     }
 
     /**

@@ -12,6 +12,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import encryption.EncryptionImplementation;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -28,11 +32,22 @@ public class mail {
     //  Logger for the class.
     private static final Logger LOGGER = Logger.getLogger("emailRecovery");
 
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.config");
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.mailCredentials");
 
     static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded);
+    }
+
+    private static String inputStreamToString(InputStream inputStream) throws IOException {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            StringBuilder stringBuilder = new StringBuilder();
+            int c;
+            while ((c = br.read()) != -1) {
+                stringBuilder.append((char) c);
+            }
+            return stringBuilder.toString();
+        }
     }
 
     /**
@@ -45,13 +60,12 @@ public class mail {
 
         final String newPassword;
 
-        // Load Private Key 
-        String simetricKeyFilePath = "/emailRecovery/simetricKey.der";
+        // Load Private Key
+        InputStream fis = EncryptionImplementation.class.getResourceAsStream("simetricKey.der");
 
         try {
-            // Load encrypted string with email 
-            String simetricKey = readFile(simetricKeyFilePath);
-            String decryptedCredentials = EncryptionImplementation.descifrarCredentials(simetricKey);
+
+            String decryptedCredentials = EncryptionImplementation.descifrarCredentials(inputStreamToString(fis));
 
             // Split credentials
             String[] credentials = decryptedCredentials.split("=");
@@ -170,5 +184,5 @@ public class mail {
         // Return the final randomly generated password as a String
         return sb.toString();
     }
-    
+
 }

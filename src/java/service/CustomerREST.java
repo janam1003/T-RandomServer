@@ -93,7 +93,7 @@ public class CustomerREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createCustomer(Customer customer) {
         try {
-            System.out.println("customer desencriptar = "+customer+"CUSTOMER REST RECIBE = " + decrypWithPrivateKey(customer.getPassword()) + " y ahora hasheado= " + generateHash(customer.getPassword()));
+            System.out.println("customer desencriptar = " + customer + "CUSTOMER REST RECIBE = " + decrypWithPrivateKey(customer.getPassword()) + " y ahora hasheado= " + generateHash(customer.getPassword()));
             customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
             ejb.createCustomer(customer);
             LOGGER.log(Level.INFO, "Created customer with id: {0}", customer.getMail());
@@ -107,8 +107,8 @@ public class CustomerREST {
     public void updateCustomer(Customer customer, @PathParam("encrypted") boolean encrypted) {
         try {
             LOGGER.info("Updating customer");
-              customer.setPassword(generateHash(customer.getPassword()));
-                ejb.updateCustomer(customer, encrypted);
+            customer.setPassword(generateHash(customer.getPassword()));
+            ejb.updateCustomer(customer, encrypted);
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
         } catch (UpdateException e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
@@ -129,12 +129,12 @@ public class CustomerREST {
     @PUT
     @Path("sendRecoveryEmail")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void sendRecoveryEmail(Customer entity) {
+    public void sendRecoveryEmail(Customer customer) throws ReadException {
         try {
-            ejb.sendRecoveryMail(entity);
+            ejb.sendRecoveryMail(customer);
+            LOGGER.info("Recovery email sent successfully");
         } catch (ReadException ex) {
             LOGGER.log(Level.SEVERE, "Error sending a recovery mail to a customer", ex.getMessage());
         }
-
     }
 }

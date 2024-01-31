@@ -145,12 +145,12 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      */
     @Override
     public void updateCustomer(Customer customer, boolean encrypted) throws UpdateException {
-        
+
         try {
             if (encrypted == true) {
-            customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
-            entityManager.merge(customer);
-            LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
+                customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
+                entityManager.merge(customer);
+                LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
             } else {
                 customer.setPassword(generateHash(customer.getPassword()));
                 entityManager.merge(customer);
@@ -159,7 +159,7 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
             throw new UpdateException(e.getMessage());
         }
-       
+
     }
 
     /**
@@ -192,22 +192,14 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      */
     @Override
     public void sendRecoveryMail(Customer customer) throws ReadException {
-
-        mail recoverMail = new mail();
-
-        
+        //mail recoverMail = new mail();
         try {
-
-            String newPassword = recoverMail.sendEmail(customer.getMail());
-
+            String newPassword = mail.sendEmail(customer.getMail());
             customer.setPassword(newPassword);
-
             updateCustomer(customer, false);
-
         } catch (UpdateException e) {
-
-            throw new ReadException(e.getMessage());
-
+            // Log or handle the specific exception related to customer update
+            throw new ReadException("Error updating customer: " + e.getMessage());
         }
     }
 }
