@@ -13,17 +13,31 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * EJB class for managing User entity CRUD operations..
  *
  * @author danid
  */
 @Stateless
 public class UserManagerEJB implements UserManagerEJBLocal {
 
+    /**
+     * The EntityManager is used to interact with the persistence context and
+     * manage User entities.
+     */
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Logger for logging messages related to user management operations.
+     */
     private static final Logger LOGGER = Logger.getLogger(CustomerManagerEJB.class.getName());
 
+    /**
+     * Creates a new user in the system.
+     *
+     * @param user The User object to be created.
+     * @throws CreateException If there is an error creating the user.
+     */
     @Override
     public void createUser(User user) throws CreateException {
         try {
@@ -36,6 +50,12 @@ public class UserManagerEJB implements UserManagerEJBLocal {
         }
     }
 
+    /**
+     * Updates an existing user in the system.
+     *
+     * @param user The User object with updated information.
+     * @throws UpdateException If there is an error updating the user.
+     */
     @Override
     public void updateUser(User user) throws UpdateException {
         try {
@@ -47,6 +67,12 @@ public class UserManagerEJB implements UserManagerEJBLocal {
         }
     }
 
+    /**
+     * Deletes a user from the system using the user's ID.
+     *
+     * @param userId The ID of the user to be deleted.
+     * @throws DeleteException If there is an error deleting the user.
+     */
     @Override
     public void deleteUser(String userId) throws DeleteException {
         try {
@@ -65,11 +91,11 @@ public class UserManagerEJB implements UserManagerEJBLocal {
     }
 
     /**
-     * Retrieves a customer by their email address.
+     * Retrieves a user by their email address.
      *
-     * @param mail The email address of the customer.
+     * @param mail The email address of the user.
      * @return The user with the specified email address.
-     * @throws ReadException If there is any Exception during processing.
+     * @throws ReadException If there is an error retrieving the user by email.
      */
     @Override
     public User findUserByMail(String mail) throws ReadException {

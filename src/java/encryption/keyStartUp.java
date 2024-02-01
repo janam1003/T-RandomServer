@@ -6,7 +6,7 @@ import javax.ejb.Startup;
 
 /**
  *
- * @author 2dam
+ * @author Iñigo
  */
 /*@Singleton
 @Startup

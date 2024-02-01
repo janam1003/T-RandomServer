@@ -5,7 +5,6 @@ import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
-
 import javax.ejb.Local;
 import java.util.List;
 
@@ -85,7 +84,7 @@ public interface CustomerManagerEJBLocal {
     /**
      * Method to send an user a new password to recover an mail
      *
-     * @param user to send an user a new password
+     * @param customer to send an user a new password
      * @throws ReadException If there is any Exception during processing.
      */
     public void sendRecoveryMail(Customer customer) throws ReadException;

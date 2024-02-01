@@ -1,4 +1,4 @@
-/*
- * This package has all the erestful services.
+/**
+ * This package contains the restfulService.
  */
 package service;

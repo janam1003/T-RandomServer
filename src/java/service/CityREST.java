@@ -41,6 +41,7 @@ public class CityREST {
     @PersistenceContext
     private EntityManager em;
 
+    // Injecting the CityManagerEJBLocal EJB for handling city-related operations.
     @EJB
     private CityManagerEJBLocal cityEJB;
 

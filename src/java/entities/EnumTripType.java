@@ -1,7 +1,7 @@
 package entities;
 
 /**
- *
+ * This enumeration is for TripTypes profiles. 
  * @author Iñigo
  */
 public enum EnumTripType {

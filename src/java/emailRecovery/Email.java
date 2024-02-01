@@ -20,22 +20,38 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 /**
- *
  * The {@code Email} class provides methods for generating random passwords and
- * sending email for account recovery purposes.
+ * sending email for account recovery purposes. This class utilizes the JavaMail
+ * API and an encryption mechanism for secure communication.
  *
  * @author Janam
+ * @version 1.0
  */
 public class Email {
 
     //  Logger for the class.
     private static final Logger LOGGER = Logger.getLogger("emailRecovery");
 
+    /**
+     * Reads the content of a file and returns it as a string.
+     *
+     * @param path The path of the file to be read.
+     * @return The content of the file as a string.
+     * @throws IOException If an I/O error occurs while reading the file.
+     */
     static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded);
     }
 
+    /**
+     * Converts an input stream to a string.
+     *
+     * @param inputStream The input stream to be converted.
+     * @return The string representation of the input stream.
+     * @throws IOException If an I/O error occurs while reading the input
+     * stream.
+     */
     private static String inputStreamToString(InputStream inputStream) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
@@ -52,6 +68,12 @@ public class Email {
         return null;
     }
 
+    /**
+     * The main method for testing the email functionality with a sample email
+     * address.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         sendEmail("lucasjanamsmile@gmail.com");
     }

@@ -39,7 +39,7 @@ public class TripInfoManagerEJB implements TripInfoManagerEJBLocal {
     /**
      * Finds a {@link TripInfo} by its Id.
      *
-     * @param id The Id for the TripInfo to be found.
+     * @param tripInfoId The Id for the TripInfo to be found.
      * @return The {@link TripInfo} object containing tripInfo data
      * @throws ReadException If there is any Exception during processing.
      */

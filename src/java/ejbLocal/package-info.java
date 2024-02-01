@@ -1,4 +1,4 @@
-/*
- * This package has all the interfaces needed for the ejb.
+/**
+ * This package contains the EJBLocal(Interfaces) for managing entity CRUD operations.
  */
 package ejbLocal;
