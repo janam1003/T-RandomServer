@@ -1,6 +1,9 @@
 package ejb;
 
 import ejbLocal.CustomerManagerEJBLocal;
+import emailRecovery.Email;
+import static encryption.EncryptionImplementation.decrypWithPrivateKey;
+import static encryption.EncryptionImplementation.generateHash;
 import entities.Customer;
 import exception.CreateException;
 import exception.DeleteException;
@@ -141,14 +144,22 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
      * @throws UpdateException If there is any Exception during processing.
      */
     @Override
-    public void updateCustomer(Customer customer) throws UpdateException {
+    public void updateCustomer(Customer customer, boolean encrypted) throws UpdateException {
+
         try {
-            entityManager.merge(customer);
-            LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
+            if (encrypted == true) {
+                customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
+                entityManager.merge(customer);
+                LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
+            } else {
+                customer.setPassword(generateHash(customer.getPassword()));
+                entityManager.merge(customer);
+            }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
             throw new UpdateException(e.getMessage());
         }
+
     }
 
     /**
@@ -173,4 +184,22 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
         }
     }
 
+    /**
+     * Thsi method is to send an Email to customer for recovering its Email.
+     *
+     * @param customer Email to send an Email to recover password
+     * @throws ReadException If there is any Exception during processing.
+     */
+    @Override
+    public void sendRecoveryMail(Customer customer) throws ReadException {
+        //mail recoverMail = new Email();
+        try {
+            String newPassword = Email.sendEmail(customer.getMail());
+            customer.setPassword(newPassword);
+            updateCustomer(customer, false);
+        } catch (UpdateException e) {
+            // Log or handle the specific exception related to customer update
+            throw new ReadException("Error updating customer: " + e.getMessage());
+        }
+    }
 }

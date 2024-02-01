@@ -1,7 +1,13 @@
 package service;
 
 import ejbLocal.CustomerManagerEJBLocal;
+import static encryption.EncryptionImplementation.decrypWithPrivateKey;
+import static encryption.EncryptionImplementation.generateHash;
 import entities.Customer;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -24,61 +30,66 @@ public class CustomerREST {
         try {
             customers = ejb.findAllCustomers();
             LOGGER.log(Level.INFO, "Retrieved all customers");
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
+            throw new InternalServerErrorException(e);
         }
         return customers;
     }
 
     @GET
     @Path("/byMail/{mail}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Customer getCustomerByMail(@PathParam("mail") String mail) {
         Customer customer = null;
         try {
             customer = ejb.findCustomerByMail(mail);
             LOGGER.log(Level.INFO, "Retrieved customer by mail: {0}", mail);
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
+            throw new InternalServerErrorException(e);
         }
         return customer;
     }
 
     @GET
     @Path("/withTrips")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getCustomersWithTrips() {
         List<Customer> customers = null;
         try {
             customers = ejb.findCustomersWithTrips();
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with trips", e);
+            throw new InternalServerErrorException(e);
         }
         return customers;
     }
 
     @GET
     @Path("/CreationDate")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getCustomersOrderByCreationDate() {
         List<Customer> customers = null;
         try {
             customers = ejb.findAllOrderByCreationDate();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving customers by address: ");
+        } catch (ReadException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving customers by cretion date: ");
+            throw new InternalServerErrorException(e);
         }
         return customers;
     }
 
     @GET
     @Path("/MoreThanOneWeekTrips")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getCustomersOneWeekTrips() {
         List<Customer> customers = null;
         try {
             customers = ejb.findOneWeekTrips();
-        } catch (Exception e) {
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with more than a week trips ");
+            throw new InternalServerErrorException(e);
         }
         return customers;
     }
@@ -87,38 +98,53 @@ public class CustomerREST {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createCustomer(Customer customer) {
         try {
+            System.out.println("customer desencriptar = " + customer + "CUSTOMER REST RECIBE = " + decrypWithPrivateKey(customer.getPassword()) + " y ahora hasheado= " + generateHash(customer.getPassword()));
+            customer.setPassword(generateHash(decrypWithPrivateKey(customer.getPassword())));
             ejb.createCustomer(customer);
             LOGGER.log(Level.INFO, "Created customer with id: {0}", customer.getMail());
-        } catch (Exception e) {
+        } catch (CreateException e) {
             LOGGER.log(Level.SEVERE, "Error creating customer", e);
+            throw new InternalServerErrorException(e);
         }
     }
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateCustomer(Customer customer) {
+    public void updateCustomer(Customer customer, @PathParam("encrypted") boolean encrypted) {
         try {
-            ejb.updateCustomer(customer);
+            LOGGER.info("Updating customer");
+            customer.setPassword(generateHash(customer.getPassword()));
+            ejb.updateCustomer(customer, encrypted);
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
-        } catch (Exception e) {
+        } catch (UpdateException e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
+            throw new InternalServerErrorException(e);
         }
     }
 
-    /**
-     * Test para push
-     *
-     * @param id
-     * @return
-     */
     @DELETE
     @Path("/Delete/{id}")
     public void deleteCustomer(@PathParam("id") String id) {
         try {
             ejb.deleteCustomer(id);
             LOGGER.log(Level.INFO, "Deleted customer with id: {0}", id);
-        } catch (Exception e) {
+        } catch (DeleteException e) {
             LOGGER.log(Level.SEVERE, "Error deleting customer", e);
+            throw new InternalServerErrorException(e);
+        }
+    }
+
+    @PUT
+    @Path("sendRecoveryEmail")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void sendRecoveryEmail(Customer customer) throws ReadException {
+        try {
+            ejb.sendRecoveryMail(customer);
+            LOGGER.info("Recovery email sent successfully");
+        } catch (ReadException e) {
+            LOGGER.log(Level.SEVERE, "Error sending a recovery mail to a customer", e.getMessage());
+            throw new InternalServerErrorException(e);
+
         }
     }
 }

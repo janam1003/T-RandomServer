@@ -27,6 +27,7 @@ public class ApplicationConfig extends Application {
         resources.add(service.CustomerREST.class);
         resources.add(service.TripInfoREST.class);
         resources.add(service.TripREST.class);
+        resources.add(service.UserREST.class);
 
     }
 }

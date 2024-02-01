@@ -47,7 +47,6 @@ public interface CustomerManagerEJBLocal {
      * created.
      * @throws ReadException If there is any Exception during processing.
      */
-
     public List<Customer> findAllOrderByCreationDate() throws ReadException;
 
     /**
@@ -56,7 +55,6 @@ public interface CustomerManagerEJBLocal {
      * @return A list of customers trips longer than one week.
      * @throws ReadException If there is any Exception during processing.
      */
-
     public List<Customer> findOneWeekTrips() throws ReadException;
 
     /**
@@ -71,9 +69,10 @@ public interface CustomerManagerEJBLocal {
      * Updates an existing customer.
      *
      * @param customer The customer to be updated.
+     * @param encrypted Shows if the password is encrypted or not
      * @throws UpdateException If there is any Exception during processing.
      */
-    public void updateCustomer(Customer customer) throws UpdateException;
+    public void updateCustomer(Customer customer, boolean encrypted) throws UpdateException;
 
     /**
      * Deletes a customer by their ID.
@@ -82,4 +81,13 @@ public interface CustomerManagerEJBLocal {
      * @throws DeleteException If there is any Exception during processing.
      */
     public void deleteCustomer(String customerId) throws DeleteException;
+
+    /**
+     * Method to send an user a new password to recover an mail
+     *
+     * @param user to send an user a new password
+     * @throws ReadException If there is any Exception during processing.
+     */
+    public void sendRecoveryMail(Customer customer) throws ReadException;
+
 }

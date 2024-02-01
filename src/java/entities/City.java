@@ -94,7 +94,7 @@ public class City implements Serializable {
     }
 
     /**
-     * @param CityId City CityId.
+     * @param cityId City CityId.
      */
     public void setCityId(Long cityId) {
         this.cityId = cityId;
@@ -184,7 +184,7 @@ public class City implements Serializable {
     /**
      * Integer representation for City instance.
      *
-     * @return
+     * @return hash
      */
     @Override
     public int hashCode() {
@@ -197,7 +197,7 @@ public class City implements Serializable {
      * Compares two City objects for equality. This method consider a City equal
      * to another City if their id fields have the same value.
      *
-     * @param object The other City object to compare to.
+     * @param Object The other City object to compare to.
      * @return true if CityIds are equals.
      */
     @Override

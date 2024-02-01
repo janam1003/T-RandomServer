@@ -20,6 +20,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful web service class exposing CRUD operations for {@link Trip} entities.
@@ -47,7 +48,7 @@ public class TripREST {
      * @param trip The object containing trip data.
      */
     @POST
-    @Consumes({"application/xml"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Trip trip) {
         try {
             LOGGER.log(Level.INFO, "TripRESTful service: create {0}.", trip);
@@ -67,7 +68,7 @@ public class TripREST {
      * @param trip The object containing trip data.
      */
     @PUT
-    @Consumes({"application/xml"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void update(Trip trip) {
         try {
             LOGGER.log(Level.INFO, "TripRESTful service: update {0}.", trip);
@@ -109,7 +110,7 @@ public class TripREST {
      */
     @GET
     @Path("{id}")
-    @Produces({"application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Trip find(@PathParam("id") Integer id) {
         Trip trip = null;
         try {
@@ -130,7 +131,7 @@ public class TripREST {
      * @return A List of {@link Trip} objects.
      */
     @GET
-    @Produces({"application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Trip> findAllTrips() {
         List<Trip> tripList = null;
         try {
@@ -154,7 +155,7 @@ public class TripREST {
      */
     @GET
     @Path("byTripType/{tripType}")
-    @Produces({"application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Trip> findTripsByTripType(@PathParam("tripType") EnumTripType tripType) {
         List<Trip> tripList = null;
         try {

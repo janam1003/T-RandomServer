@@ -24,6 +24,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import entities.TripInfoId;
+import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful web service class exposing CRUD operations for {@link TripInfo}
@@ -64,7 +65,7 @@ public class TripInfoREST {
      * @param tripInfo The object containing tripInfo data.
      */
     @POST
-    @Consumes({"application/xml"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(TripInfo tripInfo) {
         try {
             LOGGER.log(Level.INFO, "TripInfoRESTful service: create {0}.", tripInfo);
@@ -84,7 +85,7 @@ public class TripInfoREST {
      * @param tripInfo The object containing tripInfo data.
      */
     @PUT
-    @Consumes({"application/xml"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void update(TripInfo tripInfo) {
         try {
             LOGGER.log(Level.INFO, "TripInfoRESTful service: update {0}.", tripInfo);
@@ -127,7 +128,7 @@ public class TripInfoREST {
      */
     @GET
     @Path("{customerId}/{tripId}")
-    @Produces({"application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public TripInfo find(@PathParam("customerId") String customerId, @PathParam("tripId") Integer tripId) {
         TripInfo tripInfo = null;
         TripInfoId tripInfoId = new TripInfoId(tripId, customerId);
@@ -152,7 +153,7 @@ public class TripInfoREST {
      */
     @GET
     @Path("allByTrip/{tripId}")
-    @Produces({"application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<TripInfo> findAllTripInfoByTrip(@PathParam("tripId") Integer tripId) {
         List<TripInfo> tripInfoList = null;
         try {
@@ -177,7 +178,7 @@ public class TripInfoREST {
      */
     @GET
     @Path("active/{mail}")
-    @Produces({"application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<TripInfo> findActiveTripInfoByCustomer(@PathParam("mail") String mail) {
         List<TripInfo> tripInfoList = null;
         try {
@@ -202,7 +203,7 @@ public class TripInfoREST {
      */
     @GET
     @Path("inactive/{mail}")
-    @Produces({"application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<TripInfo> findInactiveTripInfoByCustomer(@PathParam("mail") String mail) {
         List<TripInfo> tripInfoList = null;
         try {
@@ -227,7 +228,7 @@ public class TripInfoREST {
      */
     @GET
     @Path("allByCustomer/{mail}")
-    @Produces({"application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<TripInfo> findAllTripInfoByCustomer(@PathParam("mail") String mail) {
         List<TripInfo> tripInfoList = null;
         try {
