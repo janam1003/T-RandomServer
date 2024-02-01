@@ -32,6 +32,7 @@ public class CustomerREST {
             LOGGER.log(Level.INFO, "Retrieved all customers");
         } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving all customers", e);
+            throw new InternalServerErrorException(e);
         }
         return customers;
     }
@@ -46,6 +47,7 @@ public class CustomerREST {
             LOGGER.log(Level.INFO, "Retrieved customer by mail: {0}", mail);
         } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customer by mail: " + mail, e);
+            throw new InternalServerErrorException(e);
         }
         return customer;
     }
@@ -59,6 +61,7 @@ public class CustomerREST {
             customers = ejb.findCustomersWithTrips();
         } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with trips", e);
+            throw new InternalServerErrorException(e);
         }
         return customers;
     }
@@ -72,6 +75,7 @@ public class CustomerREST {
             customers = ejb.findAllOrderByCreationDate();
         } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers by cretion date: ");
+            throw new InternalServerErrorException(e);
         }
         return customers;
     }
@@ -85,6 +89,7 @@ public class CustomerREST {
             customers = ejb.findOneWeekTrips();
         } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving customers with more than a week trips ");
+            throw new InternalServerErrorException(e);
         }
         return customers;
     }
@@ -99,6 +104,7 @@ public class CustomerREST {
             LOGGER.log(Level.INFO, "Created customer with id: {0}", customer.getMail());
         } catch (CreateException e) {
             LOGGER.log(Level.SEVERE, "Error creating customer", e);
+            throw new InternalServerErrorException(e);
         }
     }
 
@@ -112,6 +118,7 @@ public class CustomerREST {
             LOGGER.log(Level.INFO, "Updated customer with id: {0}", customer.getMail());
         } catch (UpdateException e) {
             LOGGER.log(Level.SEVERE, "Error updating customer", e);
+            throw new InternalServerErrorException(e);
         }
     }
 
@@ -123,6 +130,7 @@ public class CustomerREST {
             LOGGER.log(Level.INFO, "Deleted customer with id: {0}", id);
         } catch (DeleteException e) {
             LOGGER.log(Level.SEVERE, "Error deleting customer", e);
+            throw new InternalServerErrorException(e);
         }
     }
 
@@ -133,8 +141,10 @@ public class CustomerREST {
         try {
             ejb.sendRecoveryMail(customer);
             LOGGER.info("Recovery email sent successfully");
-        } catch (ReadException ex) {
-            LOGGER.log(Level.SEVERE, "Error sending a recovery mail to a customer", ex.getMessage());
+        } catch (ReadException e) {
+            LOGGER.log(Level.SEVERE, "Error sending a recovery mail to a customer", e.getMessage());
+            throw new InternalServerErrorException(e);
+
         }
     }
 }

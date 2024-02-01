@@ -17,22 +17,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 /**
  *
- * The {@code mail} class provides methods for generating random passwords and
+ * The {@code Email} class provides methods for generating random passwords and
  * sending email for account recovery purposes.
  *
  * @author Janam
  */
-public class mail {
+public class Email {
 
     //  Logger for the class.
     private static final Logger LOGGER = Logger.getLogger("emailRecovery");
-
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.mailCredentials");
 
     static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
@@ -41,13 +38,22 @@ public class mail {
 
     private static String inputStreamToString(InputStream inputStream) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
             StringBuilder stringBuilder = new StringBuilder();
             int c;
             while ((c = br.read()) != -1) {
                 stringBuilder.append((char) c);
             }
+
             return stringBuilder.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        sendEmail("lucasjanamsmile@gmail.com");
     }
 
     /**
@@ -61,7 +67,7 @@ public class mail {
         final String newPassword;
 
         // Load Private Key
-        InputStream fis = EncryptionImplementation.class.getResourceAsStream("simetricKey.der");
+        InputStream fis = Email.class.getResourceAsStream("simetricKey.der");
 
         try {
 

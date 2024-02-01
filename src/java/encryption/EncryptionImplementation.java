@@ -1,7 +1,7 @@
 package encryption;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +14,6 @@ import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.ResourceBundle;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -25,8 +24,6 @@ import javax.crypto.spec.SecretKeySpec;
 public class EncryptionImplementation {
 
     private static final byte[] salt = "g3 CRUD is salt!".getBytes();
-
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("properties.mailCredentials");
 
     public static String generateHash(String password) {
         // Convert the byte array to a hexadecimal representation
@@ -49,7 +46,6 @@ public class EncryptionImplementation {
     public static String decrypWithPrivateKey(String encryptedText) {
 
         // Load Private Key
-
         byte[] encryptedTextBytes = null;
 
         try {
@@ -69,7 +65,6 @@ public class EncryptionImplementation {
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] decryptedData = cipher.doFinal(encryptedTextBytes);
             return new String(decryptedData, StandardCharsets.UTF_8); // Convert the decrypted bytes back into a string
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,6 +89,19 @@ public class EncryptionImplementation {
         return ret;
     }
 
+    private static byte[] inputStreamToBytes(InputStream inputStream) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[4096]; // Adjust the buffer size as needed
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Descifra un texto con AES, modo CBC y padding PKCS5Padding (simétrica) y
@@ -101,13 +109,10 @@ public class EncryptionImplementation {
      *
      * @param clave La clave del usuario
      */
-    public static String descifrarCredentials(String clave) {
+    public static String descifrarCredentials(String clave) throws IOException {
         String ret = null;
 
-        String cypherMailPath = bundle.getString("CYPHERMAILPATH");
-
-        // Fichero leído
-        byte[] fileContent = fileReader(cypherMailPath);
+        byte[] fileContent = inputStreamToBytes(EncryptionImplementation.class.getResourceAsStream("mailCredentials.properties"));
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
         try {

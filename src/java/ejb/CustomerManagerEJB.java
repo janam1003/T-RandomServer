@@ -1,7 +1,7 @@
 package ejb;
 
 import ejbLocal.CustomerManagerEJBLocal;
-import emailRecovery.mail;
+import emailRecovery.Email;
 import static encryption.EncryptionImplementation.decrypWithPrivateKey;
 import static encryption.EncryptionImplementation.generateHash;
 import entities.Customer;
@@ -185,16 +185,16 @@ public class CustomerManagerEJB implements CustomerManagerEJBLocal {
     }
 
     /**
-     * Thsi method is to send an mail to customer for recovering its mail.
+     * Thsi method is to send an Email to customer for recovering its Email.
      *
-     * @param customer mail to send an mail to recover password
+     * @param customer Email to send an Email to recover password
      * @throws ReadException If there is any Exception during processing.
      */
     @Override
     public void sendRecoveryMail(Customer customer) throws ReadException {
-        //mail recoverMail = new mail();
+        //mail recoverMail = new Email();
         try {
-            String newPassword = mail.sendEmail(customer.getMail());
+            String newPassword = Email.sendEmail(customer.getMail());
             customer.setPassword(newPassword);
             updateCustomer(customer, false);
         } catch (UpdateException e) {
