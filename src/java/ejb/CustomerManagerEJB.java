@@ -23,9 +23,16 @@ import java.util.logging.Logger;
 @Stateless
 public class CustomerManagerEJB implements CustomerManagerEJBLocal {
 
+    /**
+     * The EntityManager is used to interact with the persistence context and
+     * manage User entities.
+     */
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Logger for logging messages related to user management operations.
+     */
     private static final Logger LOGGER = Logger.getLogger(CustomerManagerEJB.class.getName());
 
     /**

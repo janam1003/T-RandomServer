@@ -1,4 +1,4 @@
-/*
- * This package has all the necessary classes for the recovery of an email. 
+/**
+ * This package contains the Email class for an recovery of an email.
  */
 package emailRecovery;

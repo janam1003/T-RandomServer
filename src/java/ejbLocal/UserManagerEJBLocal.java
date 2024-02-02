@@ -8,6 +8,7 @@ import exception.UpdateException;
 import javax.ejb.Local;
 
 /**
+ * EJB Local Interface for managing User entity CRUD operations.
  *
  * @author danid
  */

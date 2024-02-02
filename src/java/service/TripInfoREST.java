@@ -99,9 +99,11 @@ public class TripInfoREST {
     }
 
     /**
-     * RESTful DELETE method for deleting {@link TripInfo} objects from id.
+     * RESTful DELETE method for deleting {@link TripInfo} objects based on
+     * customer and trip ID.
      *
-     * @param id The id for the object to be deleted.
+     * @param customerId The ID of the customer associated with the trip.
+     * @param tripId The ID of the trip to be deleted.
      */
     @DELETE
     @Path("{customerId}/{tripId}")
@@ -123,7 +125,8 @@ public class TripInfoREST {
      * RESTful GET method for reading {@link TripInfo} objects through an XML
      * representation.
      *
-     * @param id The id for the object to be read.
+     * @param customerId The ID of the customer associated with the trip.
+     * @param tripId The ID of the trip to be read.
      * @return The TripInfo object containing data.
      */
     @GET

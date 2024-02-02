@@ -197,7 +197,7 @@ public class City implements Serializable {
      * Compares two City objects for equality. This method consider a City equal
      * to another City if their id fields have the same value.
      *
-     * @param Object The other City object to compare to.
+     * @param obj The other City object to compare to.
      * @return true if CityIds are equals.
      */
     @Override

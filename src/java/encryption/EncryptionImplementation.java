@@ -21,10 +21,35 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * The {@code EncryptionImplementation} class provides methods for cryptographic
+ * operations, including hash generation, private key decryption, and file
+ * reading for encryption purposes.
+ *
+ * This class utilizes various cryptographic algorithms such as MD5, RSA, and
+ * AES for different operations.
+ *
+ * Note: The class assumes the existence of a "keysprivateKey.der" file and a
+ * "mailCredentials.properties" file for private key decryption and credential
+ * reading, respectively.
+ *
+ *
+ * @author Iñigo
+ * @version 1.0
+ */
 public class EncryptionImplementation {
 
+    /**
+     * The salt used for cryptographic operations.
+     */
     private static final byte[] salt = "g3 CRUD is salt!".getBytes();
 
+    /**
+     * Generates an MD5 hash for the given password.
+     *
+     * @param password The password to be hashed.
+     * @return The MD5 hash of the password.
+     */
     public static String generateHash(String password) {
         // Convert the byte array to a hexadecimal representation
         StringBuilder hexStringBuilder = new StringBuilder();
@@ -43,6 +68,13 @@ public class EncryptionImplementation {
         return hexStringBuilder.toString();
     }
 
+    /**
+     * Decrypts an encrypted text using the private key stored in
+     * "keysprivateKey.der".
+     *
+     * @param encryptedText The Base64-encoded encrypted text to be decrypted.
+     * @return The decrypted text.
+     */
     public static String decrypWithPrivateKey(String encryptedText) {
 
         // Load Private Key
@@ -73,10 +105,10 @@ public class EncryptionImplementation {
     }
 
     /**
-     * Retorna el contenido de un fichero
+     * Reads the content of a file and returns it as a byte array.
      *
-     * @param path Path del fichero
-     * @return El texto del fichero
+     * @param path The path of the file to be read.
+     * @return The content of the file as a byte array.
      */
     public static byte[] fileReader(String path) {
         byte ret[] = null;
@@ -89,6 +121,14 @@ public class EncryptionImplementation {
         return ret;
     }
 
+    /**
+     * Converts an InputStream to a byte array. Reads the content of the
+     * provided InputStream and converts it into a byte array.
+     *
+     * @param inputStream The InputStream to be converted to a byte array.
+     * @return The byte array representing the content of the InputStream.
+     * @throws IOException If an I/O error occurs while reading the InputStream.
+     */
     private static byte[] inputStreamToBytes(InputStream inputStream) throws IOException {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[4096]; // Adjust the buffer size as needed
@@ -104,10 +144,13 @@ public class EncryptionImplementation {
     }
 
     /**
-     * Descifra un texto con AES, modo CBC y padding PKCS5Padding (simétrica) y
-     * lo retorna
+     * Decrypts text with AES using CBC mode and PKCS5Padding, and returns the
+     * decrypted text.
      *
-     * @param clave La clave del usuario
+     * @param clave The user's key.
+     * @return The decrypted text.
+     * @throws IOException If an I/O error occurs while reading the credential
+     * file.
      */
     public static String descifrarCredentials(String clave) throws IOException {
         String ret = null;

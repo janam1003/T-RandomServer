@@ -15,14 +15,26 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * RESTful web service for managing customers.
+ *
+ * @author Dani
+ */
 @Path("customer")
 public class CustomerREST {
 
+    // Injecting the CustomerManagerEJBLocal EJB for handling customer-related operations.
     @EJB
     private CustomerManagerEJBLocal ejb;
 
+    // Logger for logging messages.
     private static final Logger LOGGER = Logger.getLogger(CustomerREST.class.getName());
 
+    /**
+     * Retrieves all customers.
+     *
+     * @return List of Customer objects in XML or JSON format.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Customer> getAllCustomers() {
@@ -37,6 +49,12 @@ public class CustomerREST {
         return customers;
     }
 
+    /**
+     * Retrieves a customer by email.
+     *
+     * @param mail Customer's email address.
+     * @return Customer object in XML or JSON format.
+     */
     @GET
     @Path("/byMail/{mail}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -52,6 +70,11 @@ public class CustomerREST {
         return customer;
     }
 
+    /**
+     * Retrieves a customer by trips.
+     *
+     * @return Customer object in XML or JSON format.
+     */
     @GET
     @Path("/withTrips")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -66,6 +89,11 @@ public class CustomerREST {
         return customers;
     }
 
+    /**
+     * Retrieves a customer by OrderByCreationDate.
+     *
+     * @return Customer object in XML or JSON format.
+     */
     @GET
     @Path("/CreationDate")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -80,6 +108,11 @@ public class CustomerREST {
         return customers;
     }
 
+    /**
+     * Retrieves a customer by OneWeekTrips.
+     *
+     * @return Customer object in XML or JSON format.
+     */
     @GET
     @Path("/MoreThanOneWeekTrips")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -94,6 +127,11 @@ public class CustomerREST {
         return customers;
     }
 
+    /**
+     * Creates a new customer.
+     *
+     * @param customer Customer object to be created.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createCustomer(Customer customer) {
@@ -108,6 +146,13 @@ public class CustomerREST {
         }
     }
 
+    /**
+     * Updates a customer's information.
+     *
+     * @param customer Customer object containing the updated information.
+     * @param encrypted A boolean flag indicating whether the customer's data is
+     * encrypted.
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateCustomer(Customer customer, @PathParam("encrypted") boolean encrypted) {
@@ -122,6 +167,11 @@ public class CustomerREST {
         }
     }
 
+    /**
+     * Deletes a customer by the provided customer ID.
+     *
+     * @param id The unique identifier of the customer to be deleted.
+     */
     @DELETE
     @Path("/Delete/{id}")
     public void deleteCustomer(@PathParam("id") String id) {
@@ -134,6 +184,12 @@ public class CustomerREST {
         }
     }
 
+    /**
+     * Sends a recovery email to the customer.
+     *
+     * @param customer Customer object for whom the recovery email is sent.
+     * @throws ReadException If there is an error sending the recovery email.
+     */
     @PUT
     @Path("sendRecoveryEmail")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

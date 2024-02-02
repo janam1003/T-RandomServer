@@ -132,7 +132,7 @@ public class CityManagerEJB implements CityManagerEJBLocal {
     /**
      * Finds a City based on the provided CityId.
      *
-     * @param cityId The unique identifier of the City.
+     * @param CityId The unique identifier of the City.
      * @return The City object if found, or null if not found.
      * @throws ReadException If an exception occurs during the read operation.
      */

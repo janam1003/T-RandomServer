@@ -1,4 +1,4 @@
-/*
- * This package has all the entities and enumerations.
+/**
+ * This package contains the class and enumerations.
  */
 package entities;
